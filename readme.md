@@ -1,6 +1,13 @@
-A Template Generator using NodeJS for express, hapi, koa and fastify
+# Template-generator
 
-node modules
+A template Generator using NodeJS for
+
+- Express
+- Koa
+- Hapi
+- fastify
+
+Using Node modules
 
 - commander
 - yargs
