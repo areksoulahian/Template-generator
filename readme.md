@@ -1,6 +1,6 @@
 # Template-generator
 
-A template Generator using NodeJS for
+A template generator for serverside rendering using NodeJS for
 
 - Express
 - Koa
