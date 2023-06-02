@@ -6,6 +6,12 @@
 - - fs-extra
 - - path
 
+## Choose Language
+
+- python
+- ruby
+- javascript
+
 ## Choose Template
 
 - Node Rest Api
@@ -18,13 +24,12 @@
 - Fastify
 - Koa
 - Hapi
-- Vanilla Nodejs
+- Vanilla JS
 
 # Realtime Server
 
 - Socket.js
 - Socket.io
-- Other
 - Other
 
 ## Serverside Application
@@ -38,11 +43,13 @@
 - MongoDB
 - MySQL
 - PostgreSQL
+- SQLite
 
 ## Choose ORM
 
 - typeORM
 - Sequelize
+- mongoose
 
 ## Needs Unit test options
 
