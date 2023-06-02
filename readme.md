@@ -1,6 +1,10 @@
 # Create Template Generator CLI
 
-- Using
+- Using Nodejs
+- - inquirer module
+- - chalk
+- - fs-extra
+- - path
 
 ## Choose Template
 
