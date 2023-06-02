@@ -57,6 +57,11 @@
 - Mocha
 - etc.
 
+## Choose type of linter
+
+- ESLint
+- other
+
 ## needs to contain following files
 
 - need to create individual config files based on the configuration of the user to scaffold the entire application
