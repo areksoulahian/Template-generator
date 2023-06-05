@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
-// const { prompt, default: inquirer } = require("inquirer");
-// const fs = require("fs-extra");
-// const path = require("path");
-// const ejs = require("ejs");
 import chalk from "chalk";
 import inquirer from "inquirer";
 import fs from "fs-extra";
 import ejs from "ejs";
 import path from "path";
+import gradient from "gradient-string";
+import chalkAnimation from "chalk-animation";
+import figlet from "figlet";
+import pkg from "nanospinner";
+const { createspinner } = pkg;
 
 const existingConfig = fs.existsSync("package.json");
 
@@ -16,22 +17,25 @@ const existingConfig = fs.existsSync("package.json");
 if (existingConfig) {
   inquirer
     .prompt([
+      // Name project
       {
         type: "text",
         name: "name",
-        message: "what is the name of the project?",
+        message: chalk.bgWhiteBright("what is the name of the project?"),
         choices: path.basename(process.cwd()),
       },
+      //choose language
       {
         type: "list",
         name: "language",
-        message: "Choose a programming language:",
-        choices: ["JavaScript", "Python", "Ruby"],
+        message: chalk.bgBlueBright("Choose a programming language:"),
+        choices: ["JavaScript" /* "Python", "Ruby" */],
       },
+      //choose framework
       {
         type: "list",
         name: "framework",
-        message: "Choose a framework:",
+        message: chalk.bgCyanBright("Choose a framework:"),
         choices: (answers) => {
           if (answers.language === "JavaScript") {
             return ["Express", "Adonis", "Sails"];
@@ -42,26 +46,31 @@ if (existingConfig) {
           }
         },
       },
+      //choose template engine
       {
         type: "list",
         name: "template engine",
-        message: "Choose a template engine:",
+        message: chalk.bgYellowBright("Choose a template engine:"),
         choices: (answers) => {
           if (answers.framework === "Express") {
             return ["ejs", "pug", "mustache"];
           }
         },
       },
+      //choose database
       {
         type: "list",
         name: "database",
-        message: "Choose a database:",
+        message: chalk.bgRedBright("Choose a database:"),
         choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "Firebase"],
       },
+      // choose orm
       {
         type: "list",
         name: "orm",
-        message: "Choose an ORM (Object-Relational Mapping) library:",
+        message: chalk.bgCyanBright(
+          "Choose an ORM (Object-Relational Mapping) library:"
+        ),
         choices: (answers) => {
           if (answers.language === "JavaScript") {
             return ["Sequelize", "Mongoose"];
@@ -72,22 +81,25 @@ if (existingConfig) {
           }
         },
       },
+      //choose linter
       {
         type: "list",
         name: "linter",
-        message: "Choose a linter:",
+        message: chalk.bgBlueBright("Choose a linter:"),
         choices: ["ESLint", "TSLint", "JSHint", "None"],
       },
+      //choose api router
       {
         type: "input",
         name: "route",
-        message: "Enter the API route:",
+        message: chalk.bgGreenBright("Enter the API route:"),
         default: "/api/example",
       },
+      //choose unit tester
       {
         type: "list",
         name: "unittester",
-        message: "Choose a Unit Test:",
+        message: chalk.bgMagentaBright("Choose a Unit Test:"),
         choices: (answers) => {
           if (answers.language === "JavaScript") {
             return ["Jest", "Mocha"];
@@ -100,8 +112,8 @@ if (existingConfig) {
       },
     ])
     .then((answers) => {
-      console.log(chalk.green("Project Name:", answers.name));
-      console.log("Selected options:");
+      console.log("Project Name:", answers.name);
+      console.log("These are your selected options below:");
       console.log("Language:", answers.language);
       console.log("Framework:", answers.framework);
       console.log("Database:", answers.database);
@@ -122,7 +134,25 @@ if (existingConfig) {
       fs.ensureFileSync(outputFilePath);
       fs.writeFileSync(outputFilePath, renderedTemplate);
 
-      console.log("Code generation completed!");
+      //figlet
+      figlet.text(
+        "Code Complete!",
+        {
+          font: "Standard",
+          horizontalLayout: "default fitted full",
+          verticalLayout: "default",
+          width: 120,
+          whitespaceBreak: true,
+        },
+        function (err, data) {
+          if (err) {
+            console.log("Something went wrong...");
+            console.dir(err);
+            return;
+          }
+          console.log(data);
+        }
+      );
     })
     .catch((error) => {
       if (error.isTtyError) {
