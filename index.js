@@ -21,21 +21,21 @@ if (existingConfig) {
       {
         type: "text",
         name: "name",
-        message: chalk.bgWhiteBright("what is the name of the project?"),
+        message: chalk.green("what is the name of the project?: "),
         choices: path.basename(process.cwd()),
       },
       //choose language
       {
         type: "list",
         name: "language",
-        message: chalk.bgBlueBright("Choose a programming language:"),
+        message: chalk.green("Choose a programming language:"),
         choices: ["JavaScript" /* "Python", "Ruby" */],
       },
       //choose framework
       {
         type: "list",
         name: "framework",
-        message: chalk.bgCyanBright("Choose a framework:"),
+        message: chalk.green("Choose a framework:"),
         choices: (answers) => {
           if (answers.language === "JavaScript") {
             return ["Express", "Adonis", "Sails"];
@@ -50,7 +50,7 @@ if (existingConfig) {
       {
         type: "list",
         name: "template engine",
-        message: chalk.bgYellowBright("Choose a template engine:"),
+        message: chalk.green("Choose a template engine:"),
         choices: (answers) => {
           if (answers.framework === "Express") {
             return ["ejs", "pug", "mustache"];
@@ -61,14 +61,14 @@ if (existingConfig) {
       {
         type: "list",
         name: "database",
-        message: chalk.bgRedBright("Choose a database:"),
+        message: chalk.green("Choose a database:"),
         choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "Firebase"],
       },
       // choose orm
       {
         type: "list",
         name: "orm",
-        message: chalk.bgCyanBright(
+        message: chalk.green(
           "Choose an ORM (Object-Relational Mapping) library:"
         ),
         choices: (answers) => {
@@ -85,21 +85,21 @@ if (existingConfig) {
       {
         type: "list",
         name: "linter",
-        message: chalk.bgBlueBright("Choose a linter:"),
+        message: chalk.green("Choose a linter:"),
         choices: ["ESLint", "TSLint", "JSHint", "None"],
       },
       //choose api router
       {
         type: "input",
         name: "route",
-        message: chalk.bgGreenBright("Enter the API route:"),
+        message: chalk.green("Enter the API route:"),
         default: "/api/example",
       },
       //choose unit tester
       {
         type: "list",
         name: "unittester",
-        message: chalk.bgMagentaBright("Choose a Unit Test:"),
+        message: chalk.green("Choose a Unit Test:"),
         choices: (answers) => {
           if (answers.language === "JavaScript") {
             return ["Jest", "Mocha"];
@@ -112,15 +112,22 @@ if (existingConfig) {
       },
     ])
     .then((answers) => {
-      console.log("Project Name:", answers.name);
       console.log("These are your selected options below:");
-      console.log("Language:", answers.language);
-      console.log("Framework:", answers.framework);
-      console.log("Database:", answers.database);
-      console.log("ORM:", answers.orm);
-      console.log("Linter:", answers.linter);
-      console.log("Unit Test:", answers.unittester);
+      console.log("Project Name:", chalk.yellow(answers.name));
+      console.log("Language:", chalk.yellow(answers.language));
+      console.log("Framework:", chalk.yellow(answers.framework));
+      console.log("Database:", chalk.yellow(answers.database));
+      console.log("ORM:", chalk.yellow(answers.orm));
+      console.log("Linter:", chalk.yellow(answers.linter));
+      console.log("Unit Test:", chalk.yellow(answers.unittester));
       /*                    */
+      console.log("");
+      console.log("scaffolding project in " + process.cwd());
+      console.log("done. now run:");
+      console.log("");
+      console.log("cd " + path.basename(process.cwd()));
+      console.log("npm install");
+      console.log("npm run dev");
 
       // Load the appropriate template file
       const templateFilePath = `./templates/${answers.framework}-${answers.database}.js`;
@@ -153,6 +160,8 @@ if (existingConfig) {
           console.log(data);
         }
       );
+
+      // End figlet
     })
     .catch((error) => {
       if (error.isTtyError) {
