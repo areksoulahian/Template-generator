@@ -5,9 +5,10 @@ const mongoose = require("mongoose");
 
 const app = express();
 const port = 3000;
+let dbURL = "your_database";
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/your_database", {
+mongoose.connect(`mongodb://localhost:27017/${dbURL}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

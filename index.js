@@ -12,6 +12,7 @@ import pkg from "nanospinner";
 const { createspinner } = pkg;
 
 const existingConfig = fs.existsSync("package.json");
+const CURR_DIR = process.cwd();
 
 // main questions
 if (existingConfig) {
@@ -19,17 +20,21 @@ if (existingConfig) {
     .prompt([
       // Name project
       {
-        type: "text",
-        name: "name",
-        message: chalk.green("what is the name of the project?: "),
-        choices: path.basename(process.cwd()),
+        type: "input",
+        name: "project-name",
+        message: chalk.green("Project name:"),
+        validate: function (input) {
+          if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
+          else
+            return "Project name may only include letters, numbers, underscores and hashes.";
+        },
       },
       //choose language
       {
         type: "list",
         name: "language",
         message: chalk.green("Choose a programming language:"),
-        choices: ["JavaScript" /* "Python", "Ruby" */],
+        choices: ["JavaScript", "Python", "Ruby"],
       },
       //choose framework
       {
@@ -37,8 +42,10 @@ if (existingConfig) {
         name: "framework",
         message: chalk.green("Choose a framework:"),
         choices: (answers) => {
+          console.log("Answers:", answers);
+          console.log("Language:", answers.language);
           if (answers.language === "JavaScript") {
-            return ["Express", "Adonis", "Sails"];
+            return ["Express", "Koa", "Hapi", "Fastify"];
           } else if (answers.language === "Python") {
             return ["Django", "Flask", "FastAPI"];
           } else if (answers.language === "Ruby") {
@@ -53,7 +60,13 @@ if (existingConfig) {
         message: chalk.green("Choose a template engine:"),
         choices: (answers) => {
           if (answers.framework === "Express") {
-            return ["ejs", "pug", "mustache"];
+            return ["ejs", "pug", "handlebars"];
+          } else if (answers.framework === "Koa") {
+            return ["ejs", "pug", "handlebars"];
+          } else if (answers.framework === "Hapi") {
+            return ["Vision"];
+          } else if (answers.framework === "Fastify") {
+            return ["Point of View"];
           }
         },
       },
@@ -62,7 +75,7 @@ if (existingConfig) {
         type: "list",
         name: "database",
         message: chalk.green("Choose a database:"),
-        choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "Firebase"],
+        choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite"],
       },
       // choose orm
       {
@@ -112,8 +125,11 @@ if (existingConfig) {
       },
     ])
     .then((answers) => {
+      // Project name variable
+      const projectName = answers["project-name"];
+
       console.log("These are your selected options below:");
-      console.log("Project Name:", chalk.yellow(answers.name));
+      console.log("Project Name:", chalk.yellow(answers["project-name"]));
       console.log("Language:", chalk.yellow(answers.language));
       console.log("Framework:", chalk.yellow(answers.framework));
       console.log("Database:", chalk.yellow(answers.database));
@@ -123,7 +139,7 @@ if (existingConfig) {
       /*                    */
       console.log("");
       console.log("scaffolding project in " + process.cwd());
-      console.log("done. now run:");
+      console.log("Done. Now run:");
       console.log("");
       console.log("cd " + path.basename(process.cwd()));
       console.log("npm install");
@@ -135,9 +151,8 @@ if (existingConfig) {
 
       // Render the template with the user-provided values
       const renderedTemplate = ejs.render(template, answers);
-
       // Save the generated code to the output file
-      const outputFilePath = `./output/${answers.framework}-${answers.database}.js`;
+      const outputFilePath = `./output/${projectName}/${answers.framework}-${answers.database}.js`;
       fs.ensureFileSync(outputFilePath);
       fs.writeFileSync(outputFilePath, renderedTemplate);
 
