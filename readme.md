@@ -9,15 +9,15 @@ Using Nodejs
 
 ## Choose Language
 
-- python
-- ruby
 - javascript
+- python (incomplete)
+- ruby (incomplete)
 
 ## Choose Template
 
 - Node Rest Api
-- Node Realtime Server
-- Node Serverside application
+- Node Realtime Server (incomplete)
+- Node Serverside application (incomplete)
 
 ## Choose Framework REST API
 
@@ -26,10 +26,10 @@ Using Nodejs
 - Koa
 - Hapi
 
-# Realtime Server
+# Realtime Server (incomplete)
 
-- Socket.js
-- Socket.io
+- Socket.js (incomplete)
+- Socket.io (incomplete)
 
 ## Template Engine
 

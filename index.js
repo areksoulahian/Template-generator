@@ -141,10 +141,10 @@ if (existingConfig) {
       console.log("Unit Test:", chalk.yellow(answers.unittester));
       /*                    */
       console.log("");
-      console.log("scaffolding project in " + process.cwd());
+      console.log("scaffolding project in " + `/output/${projectName}`);
       console.log("Done. Now run:");
       console.log("");
-      console.log("cd " + path.basename(process.cwd()));
+      console.log("cd " + `output/${projectName}`);
       console.log("npm install");
       console.log("npm run dev");
 
