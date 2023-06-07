@@ -5,11 +5,14 @@ import inquirer from "inquirer";
 import fs from "fs-extra";
 import ejs from "ejs";
 import path from "path";
-import gradient from "gradient-string";
-import chalkAnimation from "chalk-animation";
+// import gradient from "gradient-string";
+// import chalkAnimation from "chalk-animation";
 import figlet from "figlet";
-import pkg from "nanospinner";
-const { createspinner } = pkg;
+// import pkg from "nanospinner";
+// const { createspinner } = pkg;
+// import { packageJson } from "fs-extra";
+import pkg from "fs-extra";
+const { packageJson } = pkg;
 
 const existingConfig = fs.existsSync("package.json");
 const CURR_DIR = process.cwd();
@@ -99,7 +102,7 @@ if (existingConfig) {
         type: "list",
         name: "linter",
         message: chalk.green("Choose a linter:"),
-        choices: ["ESLint", "TSLint", "JSHint", "None"],
+        choices: ["eslint", "tslint", "jshint", "None"],
       },
       //choose api router
       {
@@ -115,7 +118,7 @@ if (existingConfig) {
         message: chalk.green("Choose a Unit Test:"),
         choices: (answers) => {
           if (answers.language === "JavaScript") {
-            return ["Jest", "Mocha"];
+            return ["jest", "mocha"];
           } else if (answers.language === "Python") {
             return ["", ""];
           } else if (answers.language === "Ruby") {
@@ -155,6 +158,35 @@ if (existingConfig) {
       const outputFilePath = `./output/${projectName}/${answers.framework}-${answers.database}.js`;
       fs.ensureFileSync(outputFilePath);
       fs.writeFileSync(outputFilePath, renderedTemplate);
+
+      // Generate the package.json contents
+      const packageJsonContents = JSON.stringify(
+        {
+          name: projectName,
+          version: "1.0.0",
+          description: "Your project description",
+          // ... other properties as needed ...
+          dependencies: {
+            [answers.framework.toLowerCase()]: "latest",
+            [answers.orm.toLowerCase()]: "latest",
+            [answers.database.toLowerCase()]: "latest",
+          },
+          devDependencies: {
+            [answers.linter.toLowerCase()]: "latest",
+            [answers["template engine"].toLowerCase()]: "latest",
+            [answers.unittester.toLowerCase()]: "latest",
+          },
+        },
+        null,
+        2 // Use 2 spaces for indentation
+      );
+
+      // Write the package.json file in the output directory
+      const packageJsonFilePath = path.join(
+        `./output/${projectName}/`,
+        "package.json"
+      );
+      fs.writeFileSync(packageJsonFilePath, packageJsonContents);
 
       //figlet
       figlet.text(
