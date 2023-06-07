@@ -1,10 +1,11 @@
 # Create Template Generator CLI
 
-- Using Nodejs
-- - inquirer module
-- - chalk
-- - fs-extra
-- - path
+Using Nodejs
+
+- inquirer module
+- chalk
+- fs-extra
+- path
 
 ## Choose Language
 
@@ -24,19 +25,17 @@
 - Fastify
 - Koa
 - Hapi
-- Vanilla JS
 
 # Realtime Server
 
 - Socket.js
 - Socket.io
-- Other
 
-## Serverside Application
+## Template Engine
 
-- NextJS
-- EJS (template Engine)
-- Pug (template Engline)
+- EJS
+- Pug
+- handlebars
 
 ## Choose DB
 
@@ -47,7 +46,6 @@
 
 ## Choose ORM
 
-- typeORM
 - Sequelize
 - mongoose
 
@@ -55,19 +53,19 @@
 
 - Jest
 - Mocha
-- etc.
 
 ## Choose type of linter
 
 - ESLint
-- other
+- TSLint
 
 ## needs to contain following files
 
 - need to create individual config files based on the configuration of the user to scaffold the entire application
 - git config
-- lint config
+- pretter config
 - package.json w/ scripts ex: {start: node server.js}
+- lint config
 
 ## Needs to be dockerized
 
