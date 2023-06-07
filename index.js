@@ -109,7 +109,7 @@ if (existingConfig) {
         type: "input",
         name: "route",
         message: chalk.green("Enter the API route:"),
-        default: "/api/example",
+        default: "/",
       },
       //choose unit tester
       {
