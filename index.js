@@ -159,6 +159,22 @@ if (existingConfig) {
       fs.ensureFileSync(outputFilePath);
       fs.writeFileSync(outputFilePath, renderedTemplate);
 
+      // Copy the .gitignore file to the output directory
+      const gitignoreFilePath = path.join(`./templates`, ".gitignore");
+      const gitignoreOutputPath = path.join(
+        `./output/${projectName}`,
+        ".gitignore"
+      );
+      fs.copySync(gitignoreFilePath, gitignoreOutputPath);
+
+      // copy prettier config file
+      const prettierConfigFilePath = path.join(`./templates`, ".prettierrc");
+      const prettierOutputFilePath = path.join(
+        `./output/${projectName}`,
+        ".prettierrc"
+      );
+      fs.copySync(prettierConfigFilePath, prettierOutputFilePath);
+
       // Generate the package.json contents
       const packageJsonContents = JSON.stringify(
         {
