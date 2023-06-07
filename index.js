@@ -155,7 +155,8 @@ if (existingConfig) {
       // Render the template with the user-provided values
       const renderedTemplate = ejs.render(template, answers);
       // Save the generated code to the output file
-      const outputFilePath = `./output/${projectName}/${answers.framework}-${answers.database}.js`;
+      //const outputFilePath = `./output/${projectName}/${answers.framework}-${answers.database}.js`;
+      const outputFilePath = `./output/${projectName}/server.js`;
       fs.ensureFileSync(outputFilePath);
       fs.writeFileSync(outputFilePath, renderedTemplate);
 
@@ -182,6 +183,11 @@ if (existingConfig) {
           version: "1.0.0",
           description: "Your project description",
           // ... other properties as needed ...
+          main: "server.js",
+          scripts: {
+            start: "node .",
+            dev: "nodemon .",
+          },
           dependencies: {
             [answers.framework.toLowerCase()]: "latest",
             [answers.orm.toLowerCase()]: "latest",
@@ -191,6 +197,7 @@ if (existingConfig) {
             [answers.linter.toLowerCase()]: "latest",
             [answers["template engine"].toLowerCase()]: "latest",
             [answers.unittester.toLowerCase()]: "latest",
+            nodemon: "latest",
           },
         },
         null,

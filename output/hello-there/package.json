@@ -1,0 +1,16 @@
+{
+  "name": "hello-there",
+  "version": "1.0.0",
+  "description": "Your project description",
+  "dependencies": {
+    "express": "latest",
+    "sequelize": "latest",
+    "mysql": "latest"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "ejs": "latest",
+    "jest": "latest",
+    "nodemon": "latest"
+  }
+}

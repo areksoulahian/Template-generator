@@ -1,0 +1,15 @@
+{
+  "name": "areks-project",
+  "version": "1.0.0",
+  "description": "Your project description",
+  "dependencies": {
+    "express": "latest",
+    "sequelize": "latest",
+    "sqlite": "latest"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "ejs": "latest",
+    "jest": "latest"
+  }
+}
