@@ -298,6 +298,53 @@ This project is licensed under the [MIT License](LICENSE).
       fs.writeFileSync(envFilePath, envContents);
       //DOTENV END
 
+      //UNIT TESTING START
+      //JEST START
+      // Generate Jest configuration file
+      if (answers.unittester.toLowerCase() === "jest") {
+        const jestConfig = {
+          // Jest configuration options
+          testEnvironment: "node",
+          testMatch: ["**/__tests__/**/*.js", "**/?(*.)+(spec|test).js"],
+          collectCoverage: true,
+          coverageDirectory: "coverage",
+        };
+
+        // Write the jest.config.js file in the output directory
+        const jestConfigFilePath = path.join(
+          `./output/${projectName}/`,
+          "jest.config.js"
+        );
+        fs.writeFileSync(
+          jestConfigFilePath,
+          `module.exports = ${JSON.stringify(jestConfig, null, 2)};`
+        );
+      }
+      // JEST END
+      //MOCHA START
+      // Generate Mocha configuration file
+      if (answers.unittester.toLowerCase() === "mocha") {
+        const mochaConfig = {
+          // Mocha configuration options
+          reporter: "spec",
+          require: "mocha-common-setup.js",
+          recursive: true,
+          timeout: 5000,
+        };
+
+        // Write the mocha.opts file in the output directory
+        const mochaConfigFilePath = path.join(
+          `./output/${projectName}/`,
+          "mocha.opts"
+        );
+        fs.writeFileSync(
+          mochaConfigFilePath,
+          JSON.stringify(mochaConfig, null, 2)
+        );
+      }
+      //MOCHA END
+      //UNIT TESTING END
+
       //PACKAGE.JSON START PART 2
       // Write the package.json file in the output directory
       const packageJsonFilePath = path.join(
