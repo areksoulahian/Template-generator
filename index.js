@@ -160,6 +160,7 @@ if (existingConfig) {
       fs.ensureFileSync(outputFilePath);
       fs.writeFileSync(outputFilePath, renderedTemplate);
 
+      //GITIGNORE START
       // Copy the .gitignore file to the output directory
       const gitignoreFilePath = path.join(`./templates`, ".gitignore");
       const gitignoreOutputPath = path.join(
@@ -167,7 +168,9 @@ if (existingConfig) {
         ".gitignore"
       );
       fs.copySync(gitignoreFilePath, gitignoreOutputPath);
+      //GITIGNORE END
 
+      //PRETTIER START
       // copy prettier config file
       const prettierConfigFilePath = path.join(`./templates`, ".prettierrc");
       const prettierOutputFilePath = path.join(
@@ -175,7 +178,9 @@ if (existingConfig) {
         ".prettierrc"
       );
       fs.copySync(prettierConfigFilePath, prettierOutputFilePath);
+      //PRETTIER END
 
+      //PACKAGE.JSON START PART 1
       // Generate the package.json contents
       const packageJsonContents = JSON.stringify(
         {
@@ -192,19 +197,69 @@ if (existingConfig) {
             [answers.framework.toLowerCase()]: "latest",
             [answers.orm.toLowerCase()]: "latest",
             [answers.database.toLowerCase()]: "latest",
+            dotenv: "latest",
           },
           devDependencies: {
             [answers.linter.toLowerCase()]: "latest",
             [answers["template engine"].toLowerCase()]: "latest",
             [answers.unittester.toLowerCase()]: "latest",
             nodemon: "latest",
+            "@babel/core": "latest",
+            "@babel/preset-env": "latest",
           },
         },
         null,
         2 // Use 2 spaces for indentation
       );
+      //PACKAGE.JSON END PART 1
 
-      // eslint config START
+      // README START
+      // Generate README.md contents
+      const readmeContents = `
+# ${projectName}
+
+This is a README file for your project. Feel free to update it with relevant information about your project.
+
+## Getting Started
+
+1. Install dependencies:
+  \`\`\`
+  npm install
+  \`\`\`
+
+2. Start the development server:
+  \`\`\`
+  npm run dev
+  \`\`\`
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+`;
+
+      // Write the README.md file in the output directory
+      const readmeFilePath = path.join(`./output/${projectName}/`, "README.md");
+      fs.writeFileSync(readmeFilePath, readmeContents);
+      // README end
+
+      //BABEL START
+      // Generate .babelrc contents
+      const babelConfig = {
+        presets: ["@babel/preset-env"],
+      };
+
+      // Write the .babelrc file in the output directory
+      const babelConfigFilePath = path.join(
+        `./output/${projectName}/`,
+        ".babelrc"
+      );
+      fs.writeFileSync(
+        babelConfigFilePath,
+        JSON.stringify(babelConfig, null, 2)
+      );
+      //BABEL END
+
+      // ESLINT START
       if (answers.linter === "eslint") {
         const eslintConfig = {
           env: {
@@ -230,14 +285,27 @@ if (existingConfig) {
           JSON.stringify(eslintConfig, null, 2)
         );
       }
-      //ESLINT CONFIG END
+      //ESLINT END
 
+      //DOTENV START
+      // Create .env file contents
+      const envContents = `
+        PORT=3000
+        `;
+
+      // Write the .env file in the output directory
+      const envFilePath = path.join(`./output/${projectName}/`, ".env");
+      fs.writeFileSync(envFilePath, envContents);
+      //DOTENV END
+
+      //PACKAGE.JSON START PART 2
       // Write the package.json file in the output directory
       const packageJsonFilePath = path.join(
         `./output/${projectName}/`,
         "package.json"
       );
       fs.writeFileSync(packageJsonFilePath, packageJsonContents);
+      //PACKAGE.JSON END PART 2
 
       //figlet
       figlet.text(
