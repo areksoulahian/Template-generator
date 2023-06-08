@@ -37,7 +37,7 @@ if (existingConfig) {
         type: "list",
         name: "language",
         message: chalk.green("Choose a programming language:"),
-        choices: ["JavaScript", "Python", "Ruby"],
+        choices: ["JavaScript" /*"Python", "Ruby"*/],
       },
       //choose framework
       {
@@ -78,7 +78,7 @@ if (existingConfig) {
         type: "list",
         name: "database",
         message: chalk.green("Choose a database:"),
-        choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite"],
+        choices: ["mysql", "postgres", "mongodb", "sqlite3"],
       },
       // choose orm
       {
@@ -89,7 +89,7 @@ if (existingConfig) {
         ),
         choices: (answers) => {
           if (answers.language === "JavaScript") {
-            return ["Sequelize", "Mongoose"];
+            return ["sequelize", "mongoose"];
           } else if (answers.language === "Python") {
             return ["Django ORM", "SQLAlchemy"];
           } else if (answers.language === "Ruby") {
@@ -102,7 +102,7 @@ if (existingConfig) {
         type: "list",
         name: "linter",
         message: chalk.green("Choose a linter:"),
-        choices: ["eslint", "tslint", "jshint", "None"],
+        choices: ["eslint", "None"],
       },
       //choose api router
       {
@@ -203,6 +203,34 @@ if (existingConfig) {
         null,
         2 // Use 2 spaces for indentation
       );
+
+      // eslint config START
+      if (answers.linter === "eslint") {
+        const eslintConfig = {
+          env: {
+            browser: true,
+            node: true,
+          },
+          extends: ["eslint:recommended"],
+          parserOptions: {
+            ecmaVersion: 2021,
+          },
+          rules: {
+            // Add your custom rules here
+          },
+        };
+
+        // Write the ESLint config to the .eslintrc file
+        const eslintConfigFilePath = path.join(
+          `./output/${projectName}/`,
+          ".eslintrc"
+        );
+        fs.writeFileSync(
+          eslintConfigFilePath,
+          JSON.stringify(eslintConfig, null, 2)
+        );
+      }
+      //ESLINT CONFIG END
 
       // Write the package.json file in the output directory
       const packageJsonFilePath = path.join(

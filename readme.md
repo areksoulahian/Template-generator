@@ -9,63 +9,64 @@ Using Nodejs
 
 ## Choose Language
 
-- javascript
+- javascript (complete)
 - python (incomplete)
 - ruby (incomplete)
 
 ## Choose Template
 
-- Node Rest Api
+- Node Rest Api (complete)
 - Node Realtime Server (incomplete)
 - Node Serverside application (incomplete)
 
 ## Choose Framework REST API
 
-- Express
-- Fastify
-- Koa
-- Hapi
+- express (complete)
+- fastify (complete)
+- koa (complete)
+- hapi (complete)
 
 # Realtime Server (incomplete)
 
 - Socket.js (incomplete)
 - Socket.io (incomplete)
 
-## Template Engine
+## Template Engine (complete)
 
-- EJS
-- Pug
-- handlebars
+- ejs (complete)
+- pug (complete)
+- handlebars (complete)
 
-## Choose DB
+## Choose DB (complete)
 
-- MongoDB
-- MySQL
-- PostgreSQL
-- SQLite
+- mongodb (complete)
+- mysql (complete)
+- postgres (complete)
+- sqlite3 (complete)
 
-## Choose ORM
+## Choose ORM (complete)
 
-- Sequelize
-- mongoose
+- Sequelize (complete)
+- mongoose (complete)
 
 ## Needs Unit test options
 
-- Jest
-- Mocha
+- jest (complete)
+- mocha (complete)
 
-## Choose type of linter
+## Choose type of linter (complete)
 
-- ESLint
-- TSLint
+- eslint (complete)
+- None
 
-## needs to contain following files
+## needs to contain following files (complete)
 
-- need to create individual config files based on the configuration of the user to scaffold the entire application
-- git config
-- pretter config
-- package.json w/ scripts ex: {start: node server.js}
-- lint config
+need to create individual config files based on the configuration of the user to scaffold the entire application
+
+- git config (complete)
+- pretter config (complete)
+- lint config (complete)
+- package.json w/ scripts ex: {start: node server.js} (complete)
 
 ## Needs to be dockerized
 
