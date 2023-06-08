@@ -10,8 +10,7 @@ Using Nodejs
 ## Choose Language
 
 - javascript (complete)
-- python (incomplete)
-- ruby (incomplete)
+- typescript (incomplete)
 
 ## Choose Template
 
@@ -58,6 +57,11 @@ Using Nodejs
 
 - eslint (complete)
 - None
+
+## Choose bundler
+
+- webpack (incomplete)
+- parcel (incomplete)
 
 ## needs to contain following files (complete)
 
