@@ -37,7 +37,7 @@ if (existingConfig) {
         type: "list",
         name: "language",
         message: chalk.green("Choose a programming language:"),
-        choices: ["JavaScript" /*"Python", "Ruby"*/],
+        choices: ["JavaScript", "Typescript"],
       },
       //choose framework
       {
@@ -49,10 +49,8 @@ if (existingConfig) {
           console.log("Language:", answers.language);
           if (answers.language === "JavaScript") {
             return ["Express", "Koa", "Hapi", "Fastify"];
-          } else if (answers.language === "Python") {
-            return ["Django", "Flask", "FastAPI"];
-          } else if (answers.language === "Ruby") {
-            return ["Ruby on Rails", "Sinatra"];
+          } else if (answers.language === "Typescript") {
+            return ["Express", "Koa", "Hapi", "Fastify"];
           }
         },
       },
@@ -90,10 +88,8 @@ if (existingConfig) {
         choices: (answers) => {
           if (answers.language === "JavaScript") {
             return ["sequelize", "mongoose"];
-          } else if (answers.language === "Python") {
-            return ["Django ORM", "SQLAlchemy"];
-          } else if (answers.language === "Ruby") {
-            return ["Active Record"];
+          } else if (answers.language === "Typescript") {
+            return ["sequelize", "mongoose"];
           }
         },
       },
@@ -119,10 +115,8 @@ if (existingConfig) {
         choices: (answers) => {
           if (answers.language === "JavaScript") {
             return ["jest", "mocha"];
-          } else if (answers.language === "Python") {
-            return ["", ""];
-          } else if (answers.language === "Ruby") {
-            return [""];
+          } else if (answers.language === "Typescript") {
+            return ["jest", "mocha"];
           }
         },
       },
@@ -179,39 +173,6 @@ if (existingConfig) {
       );
       fs.copySync(prettierConfigFilePath, prettierOutputFilePath);
       //PRETTIER END
-
-      //PACKAGE.JSON START PART 1
-      // Generate the package.json contents
-      const packageJsonContents = JSON.stringify(
-        {
-          name: projectName,
-          version: "1.0.0",
-          description: "Your project description",
-          // ... other properties as needed ...
-          main: "server.js",
-          scripts: {
-            start: "node .",
-            dev: "nodemon .",
-          },
-          dependencies: {
-            [answers.framework.toLowerCase()]: "latest",
-            [answers.orm.toLowerCase()]: "latest",
-            [answers.database.toLowerCase()]: "latest",
-            dotenv: "latest",
-          },
-          devDependencies: {
-            [answers.linter.toLowerCase()]: "latest",
-            [answers["template engine"].toLowerCase()]: "latest",
-            [answers.unittester.toLowerCase()]: "latest",
-            nodemon: "latest",
-            "@babel/core": "latest",
-            "@babel/preset-env": "latest",
-          },
-        },
-        null,
-        2 // Use 2 spaces for indentation
-      );
-      //PACKAGE.JSON END PART 1
 
       // README START
       // Generate README.md contents
@@ -345,6 +306,39 @@ This project is licensed under the [MIT License](LICENSE).
       //MOCHA END
       //UNIT TESTING END
 
+      //PACKAGE.JSON START PART 1
+      // Generate the package.json contents
+      const packageJsonContents = JSON.stringify(
+        {
+          name: projectName,
+          version: "1.0.0",
+          description: "Your project description",
+          // ... other properties as needed ...
+          main: "server.js",
+          scripts: {
+            start: "node .",
+            dev: "nodemon .",
+          },
+          dependencies: {
+            [answers.framework.toLowerCase()]: "latest",
+            [answers.orm.toLowerCase()]: "latest",
+            [answers.database.toLowerCase()]: "latest",
+            dotenv: "latest",
+          },
+          devDependencies: {
+            [answers.linter.toLowerCase()]: "latest",
+            [answers["template engine"].toLowerCase()]: "latest",
+            [answers.unittester.toLowerCase()]: "latest",
+            nodemon: "latest",
+            "@babel/core": "latest",
+            "@babel/preset-env": "latest",
+          },
+        },
+        null,
+        2 // Use 2 spaces for indentation
+      );
+      //PACKAGE.JSON END PART 1
+
       //PACKAGE.JSON START PART 2
       // Write the package.json file in the output directory
       const packageJsonFilePath = path.join(
@@ -353,6 +347,38 @@ This project is licensed under the [MIT License](LICENSE).
       );
       fs.writeFileSync(packageJsonFilePath, packageJsonContents);
       //PACKAGE.JSON END PART 2
+
+      //TSCONFIG START
+      // Generate TypeScript configuration files
+      if (answers.language.toLowerCase() === "typescript") {
+        // Add TypeScript and ts-node to devDependencies
+        packageJsonContents.devDependencies["typescript"] = "latest";
+        packageJsonContents.devDependencies["ts-node"] = "latest";
+
+        // Add tsconfig.json file
+        const tsconfigContents = {
+          compilerOptions: {
+            target: "es6",
+            module: "commonjs",
+            strict: true,
+            esModuleInterop: true,
+            outDir: "./dist",
+          },
+          include: ["./src/**/*"],
+          exclude: ["./node_modules"],
+        };
+
+        const tsconfigFilePath = path.join(
+          `./output/${projectName}/`,
+          "tsconfig.json"
+        );
+        fs.writeFileSync(
+          tsconfigFilePath,
+          JSON.stringify(tsconfigContents, null, 2)
+        );
+      }
+
+      //TSCONFIG END
 
       //figlet
       figlet.text(
