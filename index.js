@@ -5,17 +5,13 @@ import inquirer from "inquirer";
 import fs from "fs-extra";
 import ejs from "ejs";
 import path from "path";
-// import gradient from "gradient-string";
-// import chalkAnimation from "chalk-animation";
 import figlet from "figlet";
-// import pkg from "nanospinner";
-// const { createspinner } = pkg;
-// import { packageJson } from "fs-extra";
 import pkg from "fs-extra";
 const { packageJson } = pkg;
 
 const existingConfig = fs.existsSync("package.json");
 const CURR_DIR = process.cwd();
+const template_dir = `./templates`;
 
 // main questions
 if (existingConfig) {
@@ -148,58 +144,51 @@ if (existingConfig) {
 
       // Render the template with the user-provided values
       const renderedTemplate = ejs.render(template, answers);
+
+      // Create the output directory
+      const outputDir = path.join(CURR_DIR, `output/${projectName}`);
+      fs.ensureDirSync(outputDir);
+
       // Save the generated code to the output file
-      //const outputFilePath = `./output/${projectName}/${answers.framework}-${answers.database}.js`;
-      const outputFilePath = `./output/${projectName}/server.js`;
-      fs.ensureFileSync(outputFilePath);
+      const outputFilePath = path.join(outputDir, "server.js");
       fs.writeFileSync(outputFilePath, renderedTemplate);
 
       //GITIGNORE START
       // Copy the .gitignore file to the output directory
-      const gitignoreFilePath = path.join(`./templates`, ".gitignore");
-      const gitignoreOutputPath = path.join(
-        `./output/${projectName}`,
-        ".gitignore"
-      );
+      const gitignoreFilePath = path.join(template_dir, ".gitignore");
+      const gitignoreOutputPath = path.join(outputDir, ".gitignore");
       fs.copySync(gitignoreFilePath, gitignoreOutputPath);
       //GITIGNORE END
 
       //PRETTIER START
       // copy prettier config file
-      const prettierConfigFilePath = path.join(`./templates`, ".prettierrc");
-      const prettierOutputFilePath = path.join(
-        `./output/${projectName}`,
-        ".prettierrc"
-      );
+      const prettierConfigFilePath = path.join(template_dir, ".prettierrc");
+      const prettierOutputFilePath = path.join(outputDir, ".prettierrc");
       fs.copySync(prettierConfigFilePath, prettierOutputFilePath);
       //PRETTIER END
 
       // README START
       // Generate README.md contents
-      const readmeContents = `
-# ${projectName}
+      const readmeContents = `# ${projectName}
 
-This is a README file for your project. Feel free to update it with relevant information about your project.
+        This is a README file for your project. Feel free to update it with relevant information about your project.
 
-## Getting Started
+        ## Getting Started
 
-1. Install dependencies:
-  \`\`\`
-  npm install
-  \`\`\`
+        0. cd output/${projectName}
 
-2. Start the development server:
-  \`\`\`
-  npm run dev
-  \`\`\`
+        1. Install dependencies:
+          - npm install
 
-## License
+        2. Start the development server:
+          - npm run dev
 
-This project is licensed under the [MIT License](LICENSE).
-`;
+        ## License
+
+        This project is licensed under the [MIT License](LICENSE).`;
 
       // Write the README.md file in the output directory
-      const readmeFilePath = path.join(`./output/${projectName}/`, "README.md");
+      const readmeFilePath = path.join(outputDir, "README.md");
       fs.writeFileSync(readmeFilePath, readmeContents);
       // README end
 
@@ -210,10 +199,7 @@ This project is licensed under the [MIT License](LICENSE).
       };
 
       // Write the .babelrc file in the output directory
-      const babelConfigFilePath = path.join(
-        `./output/${projectName}/`,
-        ".babelrc"
-      );
+      const babelConfigFilePath = path.join(outputDir, ".babelrc");
       fs.writeFileSync(
         babelConfigFilePath,
         JSON.stringify(babelConfig, null, 2)
@@ -237,10 +223,7 @@ This project is licensed under the [MIT License](LICENSE).
         };
 
         // Write the ESLint config to the .eslintrc file
-        const eslintConfigFilePath = path.join(
-          `./output/${projectName}/`,
-          ".eslintrc"
-        );
+        const eslintConfigFilePath = path.join(outputDir, ".eslintrc");
         fs.writeFileSync(
           eslintConfigFilePath,
           JSON.stringify(eslintConfig, null, 2)
@@ -250,12 +233,10 @@ This project is licensed under the [MIT License](LICENSE).
 
       //DOTENV START
       // Create .env file contents
-      const envContents = `
-        PORT=3000
-        `;
+      const envContents = `PORT=3000`;
 
       // Write the .env file in the output directory
-      const envFilePath = path.join(`./output/${projectName}/`, ".env");
+      const envFilePath = path.join(outputDir, ".env");
       fs.writeFileSync(envFilePath, envContents);
       //DOTENV END
 
@@ -272,10 +253,7 @@ This project is licensed under the [MIT License](LICENSE).
         };
 
         // Write the jest.config.js file in the output directory
-        const jestConfigFilePath = path.join(
-          `./output/${projectName}/`,
-          "jest.config.js"
-        );
+        const jestConfigFilePath = path.join(outputDir, "jest.config.js");
         fs.writeFileSync(
           jestConfigFilePath,
           `module.exports = ${JSON.stringify(jestConfig, null, 2)};`
@@ -294,10 +272,7 @@ This project is licensed under the [MIT License](LICENSE).
         };
 
         // Write the mocha.opts file in the output directory
-        const mochaConfigFilePath = path.join(
-          `./output/${projectName}/`,
-          "mocha.opts"
-        );
+        const mochaConfigFilePath = path.join(outputDir, "mocha.opts");
         fs.writeFileSync(
           mochaConfigFilePath,
           JSON.stringify(mochaConfig, null, 2)
@@ -306,7 +281,7 @@ This project is licensed under the [MIT License](LICENSE).
       //MOCHA END
       //UNIT TESTING END
 
-      //PACKAGE.JSON START PART 1
+      //PACKAGE.JSON START
       // Generate the package.json contents
       const packageJsonContents = JSON.stringify(
         {
@@ -337,24 +312,15 @@ This project is licensed under the [MIT License](LICENSE).
         null,
         2 // Use 2 spaces for indentation
       );
-      //PACKAGE.JSON END PART 1
 
-      //PACKAGE.JSON START PART 2
       // Write the package.json file in the output directory
-      const packageJsonFilePath = path.join(
-        `./output/${projectName}/`,
-        "package.json"
-      );
+      const packageJsonFilePath = path.join(outputDir, "package.json");
       fs.writeFileSync(packageJsonFilePath, packageJsonContents);
-      //PACKAGE.JSON END PART 2
 
+      //PACKAGE.JSON END
       //TSCONFIG START
       // Generate TypeScript configuration files
       if (answers.language.toLowerCase() === "typescript") {
-        // Add TypeScript and ts-node to devDependencies
-        packageJsonContents.devDependencies["typescript"] = "latest";
-        packageJsonContents.devDependencies["ts-node"] = "latest";
-
         // Add tsconfig.json file
         const tsconfigContents = {
           compilerOptions: {
@@ -368,10 +334,7 @@ This project is licensed under the [MIT License](LICENSE).
           exclude: ["./node_modules"],
         };
 
-        const tsconfigFilePath = path.join(
-          `./output/${projectName}/`,
-          "tsconfig.json"
-        );
+        const tsconfigFilePath = path.join(outputDir, "tsconfig.json");
         fs.writeFileSync(
           tsconfigFilePath,
           JSON.stringify(tsconfigContents, null, 2)

@@ -70,7 +70,10 @@ need to create individual config files based on the configuration of the user to
 - git config (complete)
 - pretter config (complete)
 - lint config (complete)
+- babel config (complete)
+- dotenv config (complete)
 - package.json w/ scripts ex: {start: node server.js} (complete)
+- ts-config (incomplete)
 
 ## Needs to be dockerized
 
@@ -78,5 +81,13 @@ need to create individual config files based on the configuration of the user to
 
 ## Notes
 
-- the user input will generate a json file
+- this template generator is an unopinionated scaffolding generator based on user input
+- the user input will generate necessary config files
 - based on that json file it will scaffold project by looking for existing template with those specifications
+
+### where to improve
+
+- refactor code
+- complete typescript options
+- work on websocket config
+- configure bundler options
