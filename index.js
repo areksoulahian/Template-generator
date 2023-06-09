@@ -345,7 +345,7 @@ if (existingConfig) {
 
       //figlet
       figlet.text(
-        "Code Complete!",
+        "hack responsibly",
         {
           font: "Standard",
           horizontalLayout: "default fitted full",
