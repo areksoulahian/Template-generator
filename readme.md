@@ -10,7 +10,7 @@ Using Nodejs
 ## Choose Language
 
 - javascript (complete)
-- typescript (incomplete)
+- typescript (complete)
 
 ## Choose Template
 
@@ -73,7 +73,7 @@ need to create individual config files based on the configuration of the user to
 - babel config (complete)
 - dotenv config (complete)
 - package.json w/ scripts ex: {start: node server.js} (complete)
-- ts-config (incomplete)
+- tsconfig.json (complete)
 
 ## Needs to be dockerized
 

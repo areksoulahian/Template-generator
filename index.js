@@ -12,6 +12,7 @@ const { packageJson } = pkg;
 const existingConfig = fs.existsSync("package.json");
 const CURR_DIR = process.cwd();
 const template_dir = `./templates`;
+const projectName = ["projectName"];
 
 // main questions
 if (existingConfig) {
@@ -20,7 +21,7 @@ if (existingConfig) {
       // Name project
       {
         type: "input",
-        name: "project-name",
+        name: "projectName",
         message: chalk.green("Project name:"),
         validate: function (input) {
           if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
@@ -41,8 +42,6 @@ if (existingConfig) {
         name: "framework",
         message: chalk.green("Choose a framework:"),
         choices: (answers) => {
-          console.log("Answers:", answers);
-          console.log("Language:", answers.language);
           if (answers.language === "JavaScript") {
             return ["Express", "Koa", "Hapi", "Fastify"];
           } else if (answers.language === "Typescript") {
@@ -118,11 +117,7 @@ if (existingConfig) {
       },
     ])
     .then((answers) => {
-      // Project name variable
-      const projectName = answers["project-name"];
-
-      console.log("These are your selected options below:");
-      console.log("Project Name:", chalk.yellow(answers["project-name"]));
+      console.log("Project Name:", chalk.yellow(answers.projectName));
       console.log("Language:", chalk.yellow(answers.language));
       console.log("Framework:", chalk.yellow(answers.framework));
       console.log("Database:", chalk.yellow(answers.database));
@@ -133,6 +128,10 @@ if (existingConfig) {
       console.log("");
       console.log("scaffolding project in " + `/output/${projectName}`);
       console.log("Done. Now run:");
+      console.log("");
+      console.log(
+        "Optional packages: npm i bycryptjs jsonwebtoken cookie-parser"
+      );
       console.log("");
       console.log("cd " + `output/${projectName}`);
       console.log("npm install");
@@ -318,6 +317,7 @@ if (existingConfig) {
       fs.writeFileSync(packageJsonFilePath, packageJsonContents);
 
       //PACKAGE.JSON END
+
       //TSCONFIG START
       // Generate TypeScript configuration files
       if (answers.language.toLowerCase() === "typescript") {
