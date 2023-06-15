@@ -1,7 +1,3 @@
-// import figlet from "figlet";
-// import pkg from "fs-extra";
-// const { packageJson } = pkg;
-// const templateDir = `./templates`;
 import chalk from "chalk";
 import fs from "fs-extra";
 import ejs from "ejs";
