@@ -14,6 +14,7 @@ export const generatePackageJson = (answers, projectName) => {
         [answers.framework.toLowerCase()]: "latest",
         [answers.orm.toLowerCase()]: "latest",
         [answers.database.toLowerCase()]: "latest",
+        [answers.websocket.toLowerCase()]: "latest",
         dotenv: "latest",
       },
       devDependencies: {

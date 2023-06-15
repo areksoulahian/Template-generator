@@ -20,10 +20,9 @@ import {
   generateMochaConfig,
   generateJestConfig,
 } from "./utils/unitTestConfigUtils.js";
+import { generateSocket } from "./utils/socketUtils.js";
 
 const existingConfig = fs.existsSync("package.json");
-const CURR_DIR = process.cwd();
-const template_dir = `./templates`;
 
 // main questions
 if (existingConfig) {
@@ -42,6 +41,7 @@ if (existingConfig) {
       const babelConfigData = generateBabelConfig();
       const mochaConfigData = generateMochaConfig(answers);
       const jestConfigData = generateJestConfig(answers);
+      const socketIOConfig = generateSocket(answers);
 
       //generate
       generateProject(
@@ -55,7 +55,8 @@ if (existingConfig) {
         dotenvData,
         babelConfigData,
         mochaConfigData,
-        jestConfigData
+        jestConfigData,
+        socketIOConfig
       );
       // console log
       console.log("Project Name:", chalk.yellow(projectName));
@@ -65,6 +66,7 @@ if (existingConfig) {
       console.log("ORM:", chalk.yellow(answers.orm));
       console.log("Linter:", chalk.yellow(answers.linter));
       console.log("Unit Test:", chalk.yellow(answers.unittester));
+      console.log("WebSocket:", chalk.yellow(answers.websocket));
       /*                    */
       console.log("");
       console.log("scaffolding project in " + `/output/${projectName}`);

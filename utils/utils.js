@@ -101,6 +101,13 @@ export const promptQuestions = [
       }
     },
   },
+  //choose Websocket
+  {
+    type: "list",
+    name: "websocket",
+    message: chalk.green("Do you want websocket?"),
+    choices: ["socketio", "none"],
+  },
 ];
 
 export const generateProject = (
@@ -114,7 +121,8 @@ export const generateProject = (
   dotenvData,
   babelConfigData,
   mochaConfigData,
-  jestConfigData
+  jestConfigData,
+  socketIOConfig
 ) => {
   // Project name variable
   const projectName = answers["project-name"];
@@ -178,5 +186,11 @@ export const generateProject = (
   if (jestConfigData) {
     const jestConfigFilePath = path.join(outputDir, "jest.config.js");
     fs.writeFileSync(jestConfigFilePath, jestConfigData);
+  }
+
+  // Write the socket io file
+  if (socketIOConfig) {
+    const socketConfigFilePath = path.join(outputDir, "socket-server.js");
+    fs.writeFileSync(socketConfigFilePath, socketIOConfig);
   }
 };
