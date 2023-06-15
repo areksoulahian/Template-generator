@@ -27,8 +27,8 @@ Using Nodejs
 
 # Realtime Server (incomplete)
 
-- Socket.js (incomplete)
-- Socket.io (incomplete)
+- webSocket (incomplete) npm ws
+- Socket.io (incomplete) npm socket.io
 
 ## Template Engine (complete)
 
