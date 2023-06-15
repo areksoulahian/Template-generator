@@ -1,12 +1,12 @@
 export const generateEslintConfig = (answers) => {
-  if (answers.linter === "eslint") {
+  if (answers.linter === 'eslint') {
     return JSON.stringify(
       {
         env: {
           browser: true,
           node: true,
         },
-        extends: ["eslint:recommended"],
+        extends: ['eslint:recommended'],
         parserOptions: {
           ecmaVersion: 2021,
         },
@@ -15,7 +15,7 @@ export const generateEslintConfig = (answers) => {
         },
       },
       null,
-      2 // Use 2 spaces for indentation
+      2, // Use 2 spaces for indentation
     );
   }
 

@@ -1,5 +1,5 @@
 export const generateReadme = (answers) => {
-  const projectName = answers["project-name"];
+  const projectName = answers['project-name'];
 
   return `
 # ${projectName}

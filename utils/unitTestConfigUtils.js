@@ -1,14 +1,14 @@
 export const generateMochaConfig = (answers) => {
-  if (answers.unittester.toLowerCase() === "mocha") {
+  if (answers.unittester.toLowerCase() === 'mocha') {
     return JSON.stringify(
       {
-        reporter: "spec",
-        require: "mocha-common-setup.js",
+        reporter: 'spec',
+        require: 'mocha-common-setup.js',
         recursive: true,
         timeout: 5000,
       },
       null,
-      2 // Use 2 spaces for indentation
+      2, // Use 2 spaces for indentation
     );
   }
 
@@ -16,7 +16,7 @@ export const generateMochaConfig = (answers) => {
 };
 
 export const generateJestConfig = (answers) => {
-  if (answers.unittester.toLowerCase() === "jest") {
+  if (answers.unittester.toLowerCase() === 'jest') {
     return `module.exports = {
     // Jest configuration options
     testEnvironment: "node",

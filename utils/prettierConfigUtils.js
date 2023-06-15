@@ -3,9 +3,9 @@ export const generatePrettierConfig = (answers) => {
     {
       semi: true,
       singleQuote: true,
-      trailingComma: "all",
+      trailingComma: 'all',
     },
     null,
-    2 // Use 2 spaces for indentation
+    2, // Use 2 spaces for indentation
   );
 };
