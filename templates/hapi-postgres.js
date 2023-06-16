@@ -1,7 +1,7 @@
 // This is a template for a Hapi.js API endpoint with PostgreSQL integration
 
 import Hapi from 'hapi';
-import { Pool } from 'pg';
+import pg from 'pg';
 
 const server = Hapi.server({
   port: process.env.PORT || 3000, // Use the environment variable PORT or fallback to 3000
@@ -9,7 +9,7 @@ const server = Hapi.server({
 });
 
 // Create a PostgreSQL pool
-const pool = new Pool({
+const pool = new pg.Pool({
   user: 'your_username',
   host: 'localhost',
   database: 'your_database',

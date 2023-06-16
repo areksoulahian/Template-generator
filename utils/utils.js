@@ -59,7 +59,7 @@ export const promptQuestions = [
     type: 'list',
     name: 'database',
     message: chalk.green('Choose a database:'),
-    choices: ['mysql', 'postgres', 'mongodb', 'sqlite3'],
+    choices: ['mysql', 'pg', 'mongodb', 'sqlite3'],
   },
   // choose orm
   {

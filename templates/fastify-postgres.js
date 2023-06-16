@@ -1,13 +1,13 @@
 // This is a template for a Fastify API endpoint with PostgreSQL integration
 
 import fastify from 'fastify';
-import { Pool } from 'pg';
+import pg from 'pg';
 
 const app = fastify();
 const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 
 // Create a PostgreSQL pool
-const pool = new Pool({
+const pool = new pg.Pool({
   user: 'your_username',
   host: 'localhost',
   database: 'your_database',
