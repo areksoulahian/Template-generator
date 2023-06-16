@@ -4,10 +4,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import fs from 'fs-extra';
 import figlet from 'figlet';
-import {
-  promptQuestions,
-  generateProject,
-} from '../Template-gen-project/utils/utils.js';
+import { promptQuestions, generateProject } from './utils/utils.js';
 import { generatePackageJson } from './utils/jsPackageUtils.js';
 import { generateTsConfig } from './utils/tsConfigUtils.js';
 import { generateEslintConfig } from './utils/eslintConfigUtils.js';
