@@ -89,3 +89,4 @@ need to create individual config files based on the configuration of the user to
 
 - Hard coded html index file
 - - need to figure out to dynamically serve
+- Dockerize to connect to database easier

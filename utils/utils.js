@@ -43,15 +43,16 @@ export const promptQuestions = [
     name: 'template engine',
     message: chalk.green('Choose a template engine:'),
     choices: (answers) => {
-      if (answers.framework === 'Express') {
+      if (answers.framework === 'Express' || 'Koa' || 'Hapi' || 'Fastify') {
         return ['ejs', 'pug', 'handlebars'];
-      } else if (answers.framework === 'Koa') {
-        return ['ejs', 'pug', 'handlebars'];
-      } else if (answers.framework === 'Hapi') {
-        return ['Vision'];
-      } else if (answers.framework === 'Fastify') {
-        return ['Point of View'];
       }
+      //else if (answers.framework === 'Koa') {
+      //   return ['ejs', 'pug', 'handlebars'];
+      // } else if (answers.framework === 'Hapi') {
+      //   return ['vision'];
+      // } else if (answers.framework === 'Fastify') {
+      //   return ['Point of View'];
+      // }
     },
   },
   //choose database

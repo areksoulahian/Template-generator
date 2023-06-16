@@ -67,6 +67,7 @@ if (existingConfig) {
       console.log('Framework:', chalk.yellow(answers.framework));
       console.log('Database:', chalk.yellow(answers.database));
       console.log('ORM:', chalk.yellow(answers.orm));
+      console.log('Template Engine:', chalk.yellow(answers['template engine']));
       console.log('Linter:', chalk.yellow(answers.linter));
       console.log('Unit Test:', chalk.yellow(answers.unittester));
       console.log('WebSocket:', chalk.yellow(answers.websocket));
