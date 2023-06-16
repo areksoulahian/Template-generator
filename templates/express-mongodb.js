@@ -1,11 +1,10 @@
 // This is a template for an Express.js API endpoint with MongoDB integration
 
-const express = require("express");
-const mongoose = require("mongoose");
+import express from 'express';
+import mongoose from 'mongoose';
 
 const app = express();
-const port = 3000;
-let dbURL = "your_database";
+const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 
 // Connect to MongoDB
 mongoose.connect(`mongodb://localhost:27017/${dbURL}`, {
@@ -18,16 +17,16 @@ mongoose.connect(`mongodb://localhost:27017/${dbURL}`, {
 // const YourModel = mongoose.model('YourModel', yourSchema);
 
 // Define your routes
-app.get("<%= route %>", async (req, res) => {
+app.get('<%= route %>', async (req, res) => {
   try {
     // Implement your logic here
     // Use mongoose to interact with MongoDB
     // Example: const result = await YourModel.find();
     // Return the response
-    res.send("Hello, Express.js with MongoDB!");
+    res.send('Hello, Express.js with MongoDB!');
   } catch (error) {
-    console.error("Error occurred:", error);
-    res.status(500).send({ error: "Internal Server Error" });
+    console.error('Error occurred:', error);
+    res.status(500).send({ error: 'Internal Server Error' });
   }
 });
 

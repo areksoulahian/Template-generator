@@ -5,6 +5,7 @@ export const generatePackageJson = (answers, projectName) => {
       version: '1.0.0',
       description: 'Your project description',
       // ... other properties as needed ...
+      type: 'module',
       main: 'server.js',
       scripts: {
         start: 'node .',

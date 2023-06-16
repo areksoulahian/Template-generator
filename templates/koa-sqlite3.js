@@ -1,26 +1,27 @@
 // This is a template for a Koa API endpoint with SQLite integration
-const Koa = require("koa");
-const Router = require("koa-router");
-const sqlite3 = require("sqlite3").verbose();
+import Koa from 'koa';
+import Router from 'koa-router';
+import sqlite3 from 'sqlite3';
 
 const app = new Koa();
 const router = new Router();
+const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 
 // Create a SQLite database connection
-const db = new sqlite3.Database(":memory:");
+const db = new sqlite3.Database(':memory:');
 
 // Define your routes
-router.get("<%= route %>", async (ctx) => {
+router.get('<%= route %>', async (ctx) => {
   try {
     // Implement your logic here
     // Use the SQLite database connection to execute queries
     // Example: db.all('SELECT * FROM your_table', (err, rows) => { ... });
     // Return the response
-    ctx.body = "Hello, Koa with SQLite!";
+    ctx.body = 'Hello, Koa with SQLite!';
   } catch (error) {
-    console.error("Error occurred:", error);
+    console.error('Error occurred:', error);
     ctx.status = 500;
-    ctx.body = { error: "Internal Server Error" };
+    ctx.body = { error: 'Internal Server Error' };
   }
 });
 
@@ -28,6 +29,6 @@ router.get("<%= route %>", async (ctx) => {
 app.use(router.routes());
 
 // Start the server
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
