@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+export const generateIndexHTML = () => {
+  return `<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -36,4 +37,5 @@
     <script src="server.js"></script>
 </body>
 
-</html>
+</html>`;
+};

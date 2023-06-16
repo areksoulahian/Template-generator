@@ -18,6 +18,8 @@ import {
   generateJestConfig,
 } from './utils/unitTestConfigUtils.js';
 import { generateSocket } from './utils/socketUtils.js';
+// import { generateIndexHTML } from './utils/indexUtils.js';
+// import { generateStyleCSS } from './utils/styleUtils.js';
 
 const existingConfig = fs.existsSync('package.json');
 
@@ -39,6 +41,8 @@ if (existingConfig) {
       const mochaConfigData = generateMochaConfig(answers);
       const jestConfigData = generateJestConfig(answers);
       const socketIOConfig = generateSocket(answers);
+      // const indexHTML = generateIndexHTML();
+      // const styleCSS = generateStyleCSS();
 
       //generate
       generateProject(
@@ -54,6 +58,8 @@ if (existingConfig) {
         mochaConfigData,
         jestConfigData,
         socketIOConfig,
+        // indexHTML,
+        // styleCSS,
       );
       // console log
       console.log('Project Name:', chalk.yellow(projectName));

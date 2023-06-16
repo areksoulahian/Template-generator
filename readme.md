@@ -87,7 +87,5 @@ need to create individual config files based on the configuration of the user to
 
 ### where to improve
 
-- refactor code
-- complete typescript options
-- work on websocket config
-- configure bundler options
+- Hard coded html index file
+- - need to figure out to dynamically serve
