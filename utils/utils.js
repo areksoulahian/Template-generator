@@ -68,10 +68,10 @@ export const promptQuestions = [
     name: 'orm',
     message: chalk.green('Choose an ORM (Object-Relational Mapping) library:'),
     choices: (answers) => {
-      if (answers.language === 'JavaScript') {
-        return ['sequelize', 'mongoose'];
-      } else if (answers.language === 'Typescript') {
-        return ['sequelize', 'mongoose'];
+      if (answers.database === 'mysql' || 'pg' || 'sqlite3') {
+        return ['sequelize'];
+      } else if (answers.database === 'mongodb') {
+        return ['mongoose'];
       }
     },
   },
@@ -95,11 +95,12 @@ export const promptQuestions = [
     name: 'unittester',
     message: chalk.green('Choose a Unit Test:'),
     choices: (answers) => {
-      if (answers.language === 'JavaScript') {
-        return ['jest', 'mocha'];
-      } else if (answers.language === 'Typescript') {
+      if (answers.language === 'JavaScript' || 'Typescript') {
         return ['jest', 'mocha'];
       }
+      // else if (answers.language === 'Typescript') {
+      //   return ['jest', 'mocha'];
+      // }
     },
   },
   //choose Websocket

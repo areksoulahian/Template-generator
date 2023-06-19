@@ -33,6 +33,7 @@ export const generateEslintConfig = (answers) => {
         },
         plugins: [
           'prettier',
+          'eslint-plugin-prettier',
           //'react',
         ],
       },

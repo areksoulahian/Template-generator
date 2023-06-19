@@ -9,6 +9,7 @@ export const generatePackageJson = (answers, projectName) => {
     scripts: {
       start: 'node .',
       dev: 'nodemon .',
+      lint: 'eslint .',
     },
     dependencies: {
       [answers.framework.toLowerCase()]: 'latest',
@@ -25,6 +26,7 @@ export const generatePackageJson = (answers, projectName) => {
       nodemon: 'latest',
       '@babel/core': 'latest',
       '@babel/preset-env': 'latest',
+      'eslint-plugin-prettier': 'latest',
     },
   };
   // Conditionally add dependency
@@ -33,6 +35,14 @@ export const generatePackageJson = (answers, projectName) => {
   }
   if (answers.framework.toLowerCase() === 'fastify') {
     packageJson.dependencies['@fastify/view'] = 'latest';
+  }
+
+  // conditionally add scripts
+  if (answers.unittester.toLowerCase() === 'jest') {
+    packageJson.scripts['test'] = 'jest';
+  }
+  if (answers.unittester.toLowerCase() === 'mocha') {
+    packageJson.scripts['test'] = 'mocha';
   }
   //return as string
   return JSON.stringify(
