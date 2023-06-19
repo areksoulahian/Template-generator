@@ -36,7 +36,7 @@ if (existingConfig) {
       const prettierConfigData = generatePrettierConfig(answers);
       const gitignoreData = generateGitignore(answers);
       const readmeData = generateReadme(answers);
-      const dotenvData = generateDotenv();
+      const dotenvData = generateDotenv(answers);
       const babelConfigData = generateBabelConfig();
       const mochaConfigData = generateMochaConfig(answers);
       const jestConfigData = generateJestConfig(answers);

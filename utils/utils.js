@@ -83,12 +83,12 @@ export const promptQuestions = [
     choices: ['eslint', 'None'],
   },
   //choose api router
-  // {
-  //   type: 'input',
-  //   name: 'route',
-  //   message: chalk.green('Enter the API route:'),
-  //   default: '/',
-  // },
+  {
+    type: 'input',
+    name: 'route',
+    message: chalk.green('Enter the API route:'),
+    default: '/',
+  },
   //choose unit tester
   {
     type: 'list',
