@@ -44,6 +44,24 @@ export const generatePackageJson = (answers, projectName) => {
   if (answers.unittester.toLowerCase() === 'mocha') {
     packageJson.scripts['test'] = 'mocha';
   }
+  // conditionally add typescript dependencies
+  if (answers.language.toLowerCase() === 'typescript') {
+    packageJson.dependencies['typescript'] = 'latest';
+    packageJson.dependencies['ts-node'] = 'latest';
+    if (answers.framework.toLowerCase() === 'express') {
+      packageJson.dependencies['@types/express'] = 'latest';
+    }
+    if (answers.framework.toLowerCase() === 'koa') {
+      packageJson.dependencies['@types/koa'] = 'latest';
+    }
+    if (answers.framework.toLowerCase() === 'fastify') {
+      packageJson.dependencies['@types/fastify'] = 'latest';
+    }
+    if (answers.framework.toLowerCase() === 'hapi') {
+      packageJson.dependencies['@types/hapi'] = 'latest';
+    }
+  }
+
   //return as string
   return JSON.stringify(
     packageJson,
