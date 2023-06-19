@@ -91,8 +91,8 @@ need to create individual config files based on the configuration of the user to
 - - need to figure out to dynamically serve
 - Dockerize to connect to database easier
 
-- use dotenv for database config
-- sequalize and mongoose question
+- use dotenv for database config ✅
+- sequalize and mongoose question ✅
 - typescript templates for typescript
 - script for test mocha jest and for lint
 - connect socket to server in templates
