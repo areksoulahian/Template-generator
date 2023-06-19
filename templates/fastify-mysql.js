@@ -2,16 +2,19 @@
 
 import fastify from 'fastify';
 import mysql from 'mysql';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = fastify();
 const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 
 // Create a MySQL connection
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'your_username',
-  password: 'your_password',
-  database: 'your_database',
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
 });
 
 connection.connect((error) => {

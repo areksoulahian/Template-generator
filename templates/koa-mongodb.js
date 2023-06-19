@@ -2,13 +2,19 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = new Koa();
 const router = new Router();
 const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 
+const mongodbURI = process.env.MONGODB_URI;
+const mongodbDB = process.env.MONGODB_DB;
+
 // Connect to MongoDB
-mongoose.connect(`mongodb://localhost:27017/${dbURL}`, {
+mongoose.connect(`${mongodbURI}${mongodbDB}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

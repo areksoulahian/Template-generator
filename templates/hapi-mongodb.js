@@ -2,14 +2,20 @@
 
 import Hapi from 'hapi';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const server = Hapi.server({
   port: process.env.PORT || 3000, // Use the environment variable PORT or fallback to 3000
   host: 'localhost',
 });
 
+const mongodbURI = process.env.MONGODB_URI;
+const mongodbDB = process.env.MONGODB_DB;
+
 // Connect to MongoDB
-mongoose.connect(`mongodb://localhost:27017/${dbURL}`, {
+mongoose.connect(`${mongodbURI}${mongodbDB}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

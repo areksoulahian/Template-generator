@@ -2,6 +2,9 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import pg from 'pg';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = new Koa();
 const router = new Router();
@@ -9,11 +12,19 @@ const port = process.env.PORT || 3000; // Use the environment variable PORT or f
 
 // Create a PostgreSQL pool
 const pool = new pg.Pool({
-  user: 'your_username',
-  host: 'localhost',
-  database: 'your_database',
-  password: 'your_password',
-  port: 5432,
+  user: process.env.PG_USER,
+  host: process.env.PG_HOST,
+  database: process.env.PG_DATABASE,
+  password: process.env.PG_PASSWORD,
+  port: process.env.PG_PORT,
+});
+
+pool.connect((error) => {
+  if (error) {
+    console.error('Error connecting to PG:', error);
+  } else {
+    console.log('Connected to PG database');
+  }
 });
 
 // Define your routes

@@ -2,19 +2,28 @@
 
 import Hapi from 'hapi';
 import mysql from 'mysql';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const server = Hapi.server({
   port: process.env.PORT || 3000, // Use the environment variable PORT or fallback to 3000
   host: 'localhost',
 });
 
-// Create a MySQL connection pool
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'your_username',
-  password: 'your_password',
-  database: 'your_database',
+const connection = mysql.createConnection({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+});
+
+connection.connect((error) => {
+  if (error) {
+    console.error('Error connecting to MySQL:', error);
+  } else {
+    console.log('Connected to MySQL database');
+  }
 });
 
 // Define your routes

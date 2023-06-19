@@ -2,6 +2,9 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import mysql from 'mysql';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = new Koa();
 const router = new Router();
@@ -9,10 +12,10 @@ const port = process.env.PORT || 3000; // Use the environment variable PORT or f
 
 // Create a MySQL connection
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'your_username',
-  password: 'your_password',
-  database: 'your_database',
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
 });
 
 connection.connect((error) => {

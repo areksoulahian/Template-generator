@@ -2,13 +2,22 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import sqlite3 from 'sqlite3';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = new Koa();
 const router = new Router();
 const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 
 // Create a SQLite database connection
-const db = new sqlite3.Database(':memory:');
+const db = new sqlite3.Database(process.env.SQLITE_DB_PATH, (err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+  } else {
+    console.log('Connected to the SQLite database');
+  }
+});
 
 // Define your routes
 router.get('<%= route %>', async (ctx) => {
