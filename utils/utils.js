@@ -43,7 +43,7 @@ export const promptQuestions = [
     name: 'template engine',
     message: chalk.green('Choose a template engine:'),
     choices: (answers) => {
-      if (answers.framework === 'Express' || 'Koa' || 'Hapi' || 'Fastify') {
+      if (answers.framework === ('Express' || 'Koa' || 'Hapi' || 'Fastify')) {
         return ['ejs', 'pug', 'handlebars'];
       }
       //else if (answers.framework === 'Koa') {
@@ -68,7 +68,7 @@ export const promptQuestions = [
     name: 'orm',
     message: chalk.green('Choose an ORM (Object-Relational Mapping) library:'),
     choices: (answers) => {
-      if (answers.database === 'mysql' || 'pg' || 'sqlite3') {
+      if (answers.database === ('mysql' || 'pg' || 'sqlite3')) {
         return ['sequelize'];
       } else if (answers.database === 'mongodb') {
         return ['mongoose'];
@@ -83,12 +83,12 @@ export const promptQuestions = [
     choices: ['eslint', 'None'],
   },
   //choose api router
-  {
-    type: 'input',
-    name: 'route',
-    message: chalk.green('Enter the API route:'),
-    default: '/',
-  },
+  // {
+  //   type: 'input',
+  //   name: 'route',
+  //   message: chalk.green('Enter the API route:'),
+  //   default: '/',
+  // },
   //choose unit tester
   {
     type: 'list',
