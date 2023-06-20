@@ -30,9 +30,7 @@ export const promptQuestions = [
     name: 'framework',
     message: chalk.green('Choose a framework:'),
     choices: (answers) => {
-      if (answers.language === 'JavaScript') {
-        return ['Express', 'Koa', 'Hapi', 'Fastify'];
-      } else if (answers.language === 'Typescript') {
+      if (answers.language === ('JavaScript' || 'Typescript')) {
         return ['Express', 'Koa', 'Hapi', 'Fastify'];
       }
     },
@@ -43,16 +41,15 @@ export const promptQuestions = [
     name: 'template engine',
     message: chalk.green('Choose a template engine:'),
     choices: (answers) => {
-      if (answers.framework === ('Express' || 'Koa' || 'Hapi' || 'Fastify')) {
+      console.log('template engine break');
+      if (
+        answers.framework === 'Express' ||
+        answers.framework === 'Koa' ||
+        answers.framework === 'Hapi' ||
+        answers.framework === 'Fastify'
+      ) {
         return ['ejs', 'pug', 'handlebars'];
       }
-      //else if (answers.framework === 'Koa') {
-      //   return ['ejs', 'pug', 'handlebars'];
-      // } else if (answers.framework === 'Hapi') {
-      //   return ['vision'];
-      // } else if (answers.framework === 'Fastify') {
-      //   return ['Point of View'];
-      // }
     },
   },
   //choose database
@@ -68,7 +65,11 @@ export const promptQuestions = [
     name: 'orm',
     message: chalk.green('Choose an ORM (Object-Relational Mapping) library:'),
     choices: (answers) => {
-      if (answers.database === ('mysql' || 'pg' || 'sqlite3')) {
+      if (
+        answers.database === 'mysql' ||
+        answers.database === 'pg' ||
+        answers.database === 'sqlite3'
+      ) {
         return ['sequelize'];
       } else if (answers.database === 'mongodb') {
         return ['mongoose'];
@@ -95,12 +96,12 @@ export const promptQuestions = [
     name: 'unittester',
     message: chalk.green('Choose a Unit Test:'),
     choices: (answers) => {
-      if (answers.language === 'JavaScript' || 'Typescript') {
+      if (
+        answers.language === 'JavaScript' ||
+        answers.language === 'Typescript'
+      ) {
         return ['jest', 'mocha'];
       }
-      // else if (answers.language === 'Typescript') {
-      //   return ['jest', 'mocha'];
-      // }
     },
   },
   //choose Websocket
