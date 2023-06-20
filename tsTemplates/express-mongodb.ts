@@ -1,12 +1,18 @@
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs-extra';
 
 dotenv.config();
 
+// Create Express app
+const app = express();
+app.use(express.json());
 // Connect to MongoDB
 const mongodbURI = process.env.MONGODB_URI;
 const mongodbDB = process.env.MONGODB_DB;
+const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 
 // Connect to MongoDB
 mongoose.connect(`${mongodbURI}${mongodbDB}`, {
@@ -28,13 +34,21 @@ const exampleSchema = new mongoose.Schema({
 // Define a Mongoose model based on the schema
 const Example = mongoose.model('Example', exampleSchema);
 
-// Create Express app
-const app = express();
-app.use(express.json());
+// to load static files
+app.use(express.static('./'));
 
-// Define API routes
+// route
 app.get('/', (req: Request, res: Response) => {
-  res.send('API is running!');
+  const indexHTMLPath = path.join(__dirname, 'index.html');
+  fs.readFile(indexHTMLPath, 'utf-8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    res.send(data);
+  });
 });
 
 app.get('/examples', async (req: Request, res: Response) => {
@@ -60,7 +74,6 @@ app.post('/examples', async (req: Request, res: Response) => {
 });
 
 // Start the server
-const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

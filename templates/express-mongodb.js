@@ -18,10 +18,20 @@ mongoose.connect(`${mongodbURI}${mongodbDB}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
 
-// Create a MongoDB schema and model if needed
-// Example: const yourSchema = new mongoose.Schema({ ... });
-// const YourModel = mongoose.model('YourModel', yourSchema);
+// Define a Mongoose schema for a simple example collection
+const exampleSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+});
+
+// Define a Mongoose model based on the schema
+const Example = mongoose.model('Example', exampleSchema);
 
 // to load static files
 app.use(express.static('./'));
