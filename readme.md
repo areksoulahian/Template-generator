@@ -72,7 +72,9 @@ need to create individual config files based on the configuration of the user to
 - lint config (complete)
 - babel config (complete)
 - dotenv config (complete)
-- package.json w/ scripts ex: {start: node server.js} (complete)
+- package.json (complete)
+- - w/ dev dependencies
+- - w/ scripts
 - tsconfig.json (complete)
 
 ## Needs to be dockerized

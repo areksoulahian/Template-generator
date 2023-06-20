@@ -10,11 +10,14 @@ const mongodbDB = process.env.MONGODB_DB;
 
 // Connect to MongoDB
 mongoose.connect(`${mongodbURI}${mongodbDB}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
 
 // Define a Mongoose schema for a simple example collection
 const exampleSchema = new mongoose.Schema({

@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import mysql, { Connection, MysqlError } from 'mysql';
+import pg from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();

@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
 import dotenv from 'dotenv';
 
 dotenv.config();
