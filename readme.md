@@ -89,12 +89,13 @@ need to create individual config files based on the configuration of the user to
 
 ### where to improve
 
-- Hard coded html index file
+- Hard coded html index file ( complete )
 - - need to figure out to dynamically serve
 - Dockerize to connect to database easier
 
-- use dotenv for database config ✅
-- sequalize and mongoose question ✅
-- typescript templates for typescript
-- script for test mocha jest and for lint
-- connect socket to server in templates
+- use dotenv for database config ( complete )
+- sequalize and mongoose question ( complete )
+- script for test mocha jest and for lint ( complete )
+- typescript templates for typescript ( incomplete )
+- connect socket to server in templates ( incomplete )
+- properly integrate the database with server files ( incomplete )
