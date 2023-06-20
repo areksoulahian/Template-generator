@@ -1,3 +1,5 @@
+// This is a template for an Express.js API endpoint with MongoDB integration
+
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
