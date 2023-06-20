@@ -61,6 +61,7 @@ const startServer = async () => {
   try {
     await server.start();
     console.log('Server running on %s', server.info.uri);
+    console.log(`Server running on http://localhost:${port}`);
   } catch (error) {
     console.error('Error starting server:', error);
   }

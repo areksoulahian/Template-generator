@@ -4,7 +4,7 @@ export const generatePackageJson = (answers, projectName) => {
     version: '1.0.0',
     description: 'Your project description',
     // ... other properties as needed ...
-    type: 'module',
+    // type: 'module',
     main: 'server.js',
     scripts: {
       start: 'node .',
@@ -43,11 +43,12 @@ export const generatePackageJson = (answers, projectName) => {
   if (answers.unittester.toLowerCase() === 'mocha') {
     packageJson.scripts['test'] = 'mocha';
   }
-  // conditionally add typescript dependencies
+  // conditionally add typescript dev dependencies
   if (answers.language.toLowerCase() === 'typescript') {
     packageJson.devDependencies['typescript'] = 'latest';
     packageJson.devDependencies['ts-node'] = 'latest';
     packageJson.devDependencies['@types/node'] = 'latest';
+    packageJson.devDependencies['@types/fs-extra'] = 'latest';
     if (answers.framework.toLowerCase() === 'express') {
       packageJson.devDependencies['@types/express'] = 'latest';
     }
@@ -81,10 +82,9 @@ export const generatePackageJson = (answers, projectName) => {
   } else if (answers.language.toLowerCase() === 'javascript') {
     packageJson.main = 'server.js';
   }
-  // script type
+  // script type dev dependency
   if (answers.language.toLowerCase() === 'typescript') {
-    packageJson.scripts['dev'] =
-      "nodemon --watch 'src/**/*.ts' --exec 'ts-node' --extension ts .";
+    packageJson.scripts['dev'] = 'nodemon --exec ts-node ./server.ts';
   } else if (answers.language.toLowerCase() === 'javascript') {
     packageJson.scripts['dev'] = 'nodemon .';
   }

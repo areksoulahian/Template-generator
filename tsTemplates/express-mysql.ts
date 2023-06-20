@@ -63,5 +63,5 @@ app.post('/examples', (req: Request, res: Response) => {
 // Start the server
 const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });

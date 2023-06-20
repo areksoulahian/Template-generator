@@ -30,7 +30,10 @@ export const promptQuestions = [
     name: 'framework',
     message: chalk.green('Choose a framework:'),
     choices: (answers) => {
-      if (answers.language === ('JavaScript' || 'Typescript')) {
+      if (
+        answers.language === 'JavaScript' ||
+        answers.language === 'Typescript'
+      ) {
         return ['Express', 'Koa', 'Hapi', 'Fastify'];
       }
     },

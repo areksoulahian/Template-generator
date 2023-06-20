@@ -9,7 +9,7 @@ export const generateTsConfig = (answers) => {
           esModuleInterop: true,
           outDir: './dist',
         },
-        include: ['./src/**/*'],
+        include: ['./**/*'],
         exclude: ['./node_modules'],
       },
       null,
