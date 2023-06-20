@@ -125,8 +125,8 @@ export const generateProject = (
   mochaConfigData,
   jestConfigData,
   socketIOConfig,
-  // indexHTML,
-  // styleCSS,
+  indexHTML,
+  styleCSS,
 ) => {
   // Project name variable
   const projectName = answers['project-name'];
@@ -195,12 +195,12 @@ export const generateProject = (
   fs.writeFileSync(babelConfigFilePath, babelConfigData);
 
   // Write the Index.html file in the output directory
-  // const indexHTMLPath = path.join(outputDir, 'index.html');
-  // fs.writeFileSync(indexHTMLPath, indexHTML);
+  const indexHTMLPath = path.join(outputDir, 'index.html');
+  fs.writeFileSync(indexHTMLPath, indexHTML);
 
   // Write the style.css file in the output directory
-  // const styleCSSPath = path.join(outputDir, 'style.css');
-  // fs.writeFileSync(styleCSSPath, styleCSS);
+  const styleCSSPath = path.join(outputDir, 'styles.css');
+  fs.writeFileSync(styleCSSPath, styleCSS);
 
   // Write the Mocha configuration file in the output directory
   if (mochaConfigData) {
