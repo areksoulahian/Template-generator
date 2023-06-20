@@ -135,16 +135,30 @@ export const generateProject = (
   const templateFilePath = `./templates/${answers.framework}-${answers.database}.js`;
   const template = fs.readFileSync(templateFilePath, 'utf-8');
 
+  //Load TS template files
+  const tsTemplateFilePath = `./tsTemplates/${answers.framework}-${answers.database}.ts`;
+  const tsTemplate = fs.readFileSync(tsTemplateFilePath, 'utf-8');
+
   // Render the template with the user-provided values
   const renderedTemplate = ejs.render(template, answers);
+  // Render the  Typescript template with the user-provided values
+  const renderedTSTemplate = ejs.render(tsTemplate, answers);
 
   // Create the output directory
   const outputDir = path.join(CURR_DIR, `output/${projectName}`);
   fs.ensureDirSync(outputDir);
 
   // Save the generated code to the output file
-  const outputFilePath = path.join(outputDir, 'server.js');
-  fs.writeFileSync(outputFilePath, renderedTemplate);
+  if (answers.language.toLowerCase() === 'javascript') {
+    const outputFilePath = path.join(outputDir, 'server.js');
+    fs.writeFileSync(outputFilePath, renderedTemplate);
+  }
+
+  // Save the generated Typescript code to the output file
+  if (answers.language.toLowerCase() === 'typescript') {
+    const outputTSFilePath = path.join(outputDir, 'server.ts');
+    fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
+  }
 
   // Write the package.json file in the output directory
   const packageJsonFilePath = path.join(outputDir, 'package.json');

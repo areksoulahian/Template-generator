@@ -8,7 +8,6 @@ export const generatePackageJson = (answers, projectName) => {
     main: 'server.js',
     scripts: {
       start: 'node .',
-      dev: 'nodemon .',
       lint: 'eslint .',
     },
     dependencies: {
@@ -46,20 +45,48 @@ export const generatePackageJson = (answers, projectName) => {
   }
   // conditionally add typescript dependencies
   if (answers.language.toLowerCase() === 'typescript') {
-    packageJson.dependencies['typescript'] = 'latest';
-    packageJson.dependencies['ts-node'] = 'latest';
+    packageJson.devDependencies['typescript'] = 'latest';
+    packageJson.devDependencies['ts-node'] = 'latest';
+    packageJson.devDependencies['@types/node'] = 'latest';
     if (answers.framework.toLowerCase() === 'express') {
-      packageJson.dependencies['@types/express'] = 'latest';
+      packageJson.devDependencies['@types/express'] = 'latest';
     }
     if (answers.framework.toLowerCase() === 'koa') {
-      packageJson.dependencies['@types/koa'] = 'latest';
+      packageJson.devDependencies['@types/koa'] = 'latest';
     }
     if (answers.framework.toLowerCase() === 'fastify') {
-      packageJson.dependencies['@types/fastify'] = 'latest';
+      packageJson.devDependencies['@types/fastify'] = 'latest';
     }
     if (answers.framework.toLowerCase() === 'hapi') {
-      packageJson.dependencies['@types/hapi'] = 'latest';
+      packageJson.devDependencies['@types/hapi'] = 'latest';
     }
+  }
+  // Typescript ORM config
+  if (
+    answers.language.toLowerCase() === 'typescript' &&
+    answers.orm.toLowerCase() === 'mongoose'
+  ) {
+    packageJson.devDependencies['@types/mongoose'] = 'latest';
+  }
+  if (
+    answers.language.toLowerCase() === 'typescript' &&
+    answers.orm.toLowerCase() === 'sequelize'
+  ) {
+    packageJson.devDependencies['@types/sequelize'] = 'latest';
+  }
+
+  // main config
+  if (answers.language.toLowerCase() === 'typescript') {
+    packageJson.main = 'server.ts';
+  } else if (answers.language.toLowerCase() === 'javascript') {
+    packageJson.main = 'server.js';
+  }
+  // script type
+  if (answers.language.toLowerCase() === 'typescript') {
+    packageJson.scripts['dev'] =
+      "nodemon --watch 'src/**/*.ts' --exec 'ts-node' --extension ts .";
+  } else if (answers.language.toLowerCase() === 'javascript') {
+    packageJson.scripts['dev'] = 'nodemon .';
   }
 
   //return as string
