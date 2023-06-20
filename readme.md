@@ -15,7 +15,7 @@ Using Nodejs
 ## Choose Template
 
 - Node Rest Api (complete)
-- Node Realtime Server (incomplete)
+- Node Realtime Server ( complete)
 - Node Serverside application (incomplete)
 
 ## Choose Framework REST API
@@ -27,8 +27,7 @@ Using Nodejs
 
 # Realtime Server (incomplete)
 
-- webSocket (incomplete) npm ws
-- Socket.io (incomplete) npm socket.io
+- Socket.io ( complete)
 
 ## Template Engine (complete)
 
@@ -79,7 +78,7 @@ need to create individual config files based on the configuration of the user to
 
 ## Needs to be dockerized
 
-- docker.config file is needed
+- docker.config file is needed ( incomplete )
 
 ## Notes
 
@@ -91,7 +90,7 @@ need to create individual config files based on the configuration of the user to
 
 - Hard coded html index file ( complete )
 - - need to figure out to dynamically serve
-- Dockerize to connect to database easier
+- Dockerize to connect to database easier ( incomplete )
 
 - use dotenv for database config ( complete )
 - sequalize and mongoose question ( complete )
