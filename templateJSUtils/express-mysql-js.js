@@ -1,4 +1,4 @@
-export const generateExpressMongoJS = (answers) => {
+export const generateExpressMysqlJS = (answers) => {
   let mysqlVar = '';
   let sequelizeVar = '';
   let mysqlConfig = '';
@@ -21,7 +21,7 @@ export const generateExpressMongoJS = (answers) => {
   });`;
   }
 
-  // Mongoose ORM
+  // Sequelizer ORM
   if (answers.orm.toLowerCase() === 'sequelizer') {
     sequelizeVar = `import sequelizer from 'sequelizer';`;
   }
@@ -40,6 +40,7 @@ export const generateExpressMongoJS = (answers) => {
   import path from 'path';
   import fs from 'fs-extra';
   ${socketVar}
+  ${sequelizeVar}
   
   dotenv.config();
   

@@ -1,4 +1,4 @@
-export const generateExpressMongoJS = (answers) => {
+export const generateExpressSqlite3JS = (answers) => {
   let sqlite3Var = '';
   let sequelizeVar = '';
   let sqlite3Config = '';
@@ -26,7 +26,7 @@ export const generateExpressMongoJS = (answers) => {
     sequelizeVar = `import sequelizer from 'sequelizer';`;
   }
 
-  // Mongo Const
+  // sqlite3 Const
   if (answers.database.toLowerCase() === 'sqlite3') {
     sqlite3Var = ``;
     sqlite3Config = ``;

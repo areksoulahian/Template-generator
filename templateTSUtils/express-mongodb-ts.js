@@ -2,6 +2,24 @@ export const generateExpressMongoTS = (answers) => {
   let mongoVar = '';
   let mongooseVar = '';
   let mongodbConfig = '';
+  let socketVar = '';
+  let socketConfig = '';
+
+  // if socketio
+  if (answers.websocket.toLowerCase() === 'socketio') {
+    socketVar = `import { Server as SocketIOServer } from 'socket.io';`;
+    socketConfig = `// Socket.IO integration
+const io = new SocketIOServer(server);
+io.on('connection', (socket) => {
+    console.log('A client connected');
+
+    socket.on('disconnect', () => {
+    console.log('A client disconnected');
+    });
+
+    // Handle custom events here
+});`;
+  }
 
   // Mongoose ORM
   if (answers.orm.toLowerCase() === 'mongoose') {
@@ -40,6 +58,7 @@ export const generateExpressMongoTS = (answers) => {
   import path from 'path';
   import fs from 'fs-extra';
   ${mongooseVar}
+  ${socketVar}
   
   dotenv.config();
   
@@ -50,6 +69,8 @@ export const generateExpressMongoTS = (answers) => {
   ${mongoVar}
   
   ${mongodbConfig}
+
+  ${socketConfig}
   
   // to load static files
   app.use(express.static('./'));

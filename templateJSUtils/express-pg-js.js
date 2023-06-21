@@ -1,4 +1,4 @@
-export const generateExpressMongoJS = (answers) => {
+export const generateExpressPgJS = (answers) => {
   let pgVar = '';
   let sequelizeVar = '';
   let pgConfig = '';
@@ -26,7 +26,7 @@ export const generateExpressMongoJS = (answers) => {
     sequelizeVar = `import sequelizer from 'sequelizer';`;
   }
 
-  // Mongo Const
+  // PG Const
   if (answers.database.toLowerCase() === 'pg') {
     pgVar = ``;
     pgConfig = ``;
