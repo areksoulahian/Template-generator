@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 
 // Serve static files
 app.register(fastifyStatic, {
-  root: path.join(__dirname, 'public'),
+  root: path.join(__dirname, 'index.html'),
 });
 
 // Socket.IO integration

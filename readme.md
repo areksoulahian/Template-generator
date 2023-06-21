@@ -90,11 +90,15 @@ need to create individual config files based on the configuration of the user to
 
 - Hard coded html index file ( complete )
 - - need to figure out to dynamically serve
-- Dockerize to connect to database easier ( incomplete )
 
 - use dotenv for database config ( complete )
 - sequalize and mongoose question ( complete )
 - script for test mocha jest and for lint ( complete )
-- typescript templates for typescript ( incomplete )
-- connect socket to server in templates ( incomplete )
-- properly integrate the database with server files ( incomplete )
+
+### make these template files into a javascript export file to handle conditionals
+
+- typescript templates for typescript ( complete-ish )
+- connect socket to server in templates ( complete-ish )
+- properly integrate the database with server files ( complete-ish )
+
+- Dockerize to connect to database easier ( incomplete )

@@ -1,6 +1,9 @@
 import express, { Request, Response } from 'express';
 import pg from 'pg';
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs-extra';
+dotenv.config();
 
 dotenv.config();
 

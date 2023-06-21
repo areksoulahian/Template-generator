@@ -1,10 +1,8 @@
 import express, { Request, Response } from 'express';
 import sqlite3 from 'sqlite3';
-import pg from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs-extra';
-dotenv.config();
 dotenv.config();
 
 // Create a SQLite database connection
