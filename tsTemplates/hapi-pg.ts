@@ -1,44 +1,78 @@
-import { Server, Request, ResponseToolkit } from '@hapi/hapi';
-import pg from 'pg';
-import dotenv from 'dotenv';
+import Hapi from 'hapi';
 import path from 'path';
-import fs from 'fs-extra';
+import dotenv from 'dotenv';
+import { Sequelize, DataTypes } from 'sequelize';
+import { Server as SocketIOServer, Socket } from 'socket.io';
+
 dotenv.config();
 
-// Create a PostgreSQL pool
-const pool = new pg.Pool({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
+const server = Hapi.server({
+  port: process.env.PORT || 3000,
+  host: 'localhost',
 });
 
-pool.connect((error) => {
-  if (error) {
-    console.error('Error connecting to PG:', error);
-  } else {
-    console.log('Connected to PG database');
+// PostgreSQL database connection
+const sequelize = new Sequelize({
+  dialect: 'postgres',
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  database: process.env.DB_NAME,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+});
+
+// Define a model
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+});
+
+// Test the database connection
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connected to PostgreSQL database');
+  })
+  .catch((err: Error) => {
+    console.error('Error connecting to PostgreSQL database:', err);
+  });
+
+// Socket.IO integration
+const io = new SocketIOServer(server.listener);
+io.on('connection', (socket: Socket) => {
+  console.log('A client connected');
+
+  socket.on('disconnect', () => {
+    console.log('A client disconnected');
+  });
+
+  // Handle custom events here
+});
+
+// Load index.html on the root route
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: (_, h) => {
+    return h.file(path.join(__dirname, 'public', 'index.html'));
+  },
+});
+
+const startServer = async () => {
+  try {
+    await server.start();
+    console.log('Server running at:', server.info.uri);
+  } catch (error) {
+    console.error('Error starting server:', error);
+    process.exit(1);
   }
-});
-
-const init = async () => {
-  const server: Server = new Server({
-    port: 3000,
-    host: 'localhost',
-  });
-  server.route({
-    method: 'GET',
-    path: '/',
-    handler: (request: Request, h: ResponseToolkit) => {
-      return 'Hello World!';
-    },
-  });
-  await server.start();
-  console.log('Server running on %s', server.info.uri);
 };
-process.on('unhandledRejection', (err) => {
-  console.log(err);
-  process.exit(1);
-});
-init();
+
+startServer();

@@ -1,42 +1,54 @@
 import fastify from 'fastify';
+import fastifyStatic from 'fastify-static';
+import path from 'path';
+import { Server as SocketIOServer, Socket } from 'socket.io';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import path from 'path';
-import fs from 'fs-extra';
 
-const server = fastify(); // Connect to MongoDB
-const mongodbURI = process.env.MONGODB_URI;
-const mongodbDB = process.env.MONGODB_DB;
-const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
+dotenv.config();
 
-// Connect to MongoDB
-mongoose.connect(`${mongodbURI}${mongodbDB}`, {
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB');
+const app = fastify();
+const port = process.env.PORT || 3000;
+
+// Serve static files
+app.register(fastifyStatic, {
+  root: path.join(__dirname, 'public'),
 });
 
-// Define a Mongoose schema for a simple example collection
-const exampleSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
+// Socket.IO integration
+const io = new SocketIOServer(app.server);
+io.on('connection', (socket: Socket) => {
+  console.log('A client connected');
+
+  socket.on('disconnect', () => {
+    console.log('A client disconnected');
+  });
 });
 
-// Define a Mongoose model based on the schema
-const Example = mongoose.model('Example', exampleSchema);
+// Mongoose connection
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+const dbName = process.env.MONGODB_DB || 'mydatabase';
 
-server.get('/ping', async (request, reply) => {
-  return 'pong\n';
-});
+mongoose
+  .connect(mongoURI, {
+    //useNewUrlParser: true,
+    //useUnifiedTopology: true,
+    dbName,
+  })
+  .then(() => {
+    console.log('Connected to MongoDB');
 
-server.listen({ port: 8080 }, (err, address) => {
+    // Add your Mongoose-related code here
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+  });
+
+// Start the server
+app.listen(port, (err, address) => {
   if (err) {
-    console.error(err);
+    console.error('Error starting server:', err);
     process.exit(1);
   }
-  console.log(`Server listening at ${address}`);
+  console.log(`Server is listening on ${address}`);
 });

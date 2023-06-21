@@ -1,44 +1,42 @@
 import Koa from 'koa';
-import Router from 'koa-router';
+import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import path from 'path';
-import fs from 'fs-extra';
+import { Server as SocketIOServer } from 'socket.io';
 
-const app = new Koa();
-const router = new Router();
+dotenv.config();
 
-// Connect to MongoDB
-const mongodbURI = process.env.MONGODB_URI;
-const mongodbDB = process.env.MONGODB_DB;
-const port = process.env.PORT || 3000; // Use the environment variable PORT or fallback to 3000let dbURL = 'your_database';
-
-// Connect to MongoDB
-mongoose.connect(`${mongodbURI}${mongodbDB}`, {
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
+// MongoDB database connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
-  console.log('Connected to MongoDB');
+  console.log('Connected to MongoDB database');
 });
 
-// Define a Mongoose schema for a simple example collection
-const exampleSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
+// Create Koa app and HTTP server
+const app = new Koa();
+const server = http.createServer(app.callback());
+
+// Socket.IO integration
+const io = new SocketIOServer(server);
+io.on('connection', (socket) => {
+  console.log('A client connected');
+
+  socket.on('disconnect', () => {
+    console.log('A client disconnected');
+  });
+
+  // Handle custom events here
 });
 
-// Define a Mongoose model based on the schema
-const Example = mongoose.model('Example', exampleSchema);
+// Rest of the Koa app setup and routes
 
-router.get('/', async (ctx) => {
-  ctx.body = 'Hello, Koa TypeScript!';
-});
+const PORT = process.env.PORT || 3000;
 
-app.use(router.routes()).use(router.allowedMethods());
-
-app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });

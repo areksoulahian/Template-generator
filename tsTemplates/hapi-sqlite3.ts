@@ -1,36 +1,76 @@
-import { Server, Request, ResponseToolkit } from '@hapi/hapi';
-import sqlite3 from 'sqlite3';
-import dotenv from 'dotenv';
+import Hapi from 'hapi';
 import path from 'path';
-import fs from 'fs-extra';
+import dotenv from 'dotenv';
+import { Sequelize, DataTypes } from 'sequelize';
+import { Server as SocketIOServer, Socket } from 'socket.io';
+import * as sqlite3 from 'sqlite3';
+
 dotenv.config();
 
-// Create a SQLite database connection
-const db = new sqlite3.Database(process.env.SQLITE_DB_PATH, (err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-  } else {
-    console.log('Connected to the SQLite database');
-  }
+const server = Hapi.server({
+  port: process.env.PORT || 3000,
+  host: 'localhost',
 });
 
-const init = async () => {
-  const server: Server = new Server({
-    port: 3000,
-    host: 'localhost',
-  });
-  server.route({
-    method: 'GET',
-    path: '/',
-    handler: (request: Request, h: ResponseToolkit) => {
-      return 'Hello World!';
-    },
-  });
-  await server.start();
-  console.log('Server running on %s', server.info.uri);
-};
-process.on('unhandledRejection', (err) => {
-  console.log(err);
-  process.exit(1);
+// SQLite database connection
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: path.join(__dirname, 'database.sqlite'),
+  dialectModule: sqlite3,
 });
-init();
+
+// Define a model
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+});
+
+// Test the database connection
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connected to SQLite database');
+  })
+  .catch((err: Error) => {
+    console.error('Error connecting to SQLite database:', err);
+  });
+
+// Socket.IO integration
+const io = new SocketIOServer(server.listener);
+io.on('connection', (socket: Socket) => {
+  console.log('A client connected');
+
+  socket.on('disconnect', () => {
+    console.log('A client disconnected');
+  });
+
+  // Handle custom events here
+});
+
+// Load index.html on the root route
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: (_, h) => {
+    return h.file(path.join(__dirname, 'public', 'index.html'));
+  },
+});
+
+const startServer = async () => {
+  try {
+    await server.start();
+    console.log('Server running at:', server.info.uri);
+  } catch (error) {
+    console.error('Error starting server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();

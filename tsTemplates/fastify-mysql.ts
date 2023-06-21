@@ -1,36 +1,81 @@
 import fastify from 'fastify';
-import mysql, { Connection, MysqlError } from 'mysql';
-import dotenv from 'dotenv';
+import fastifyStatic from 'fastify-static';
 import path from 'path';
-import fs from 'fs-extra';
+import dotenv from 'dotenv';
+import { Sequelize, DataTypes } from 'sequelize';
+import { createServer } from 'http';
+import { Server, Socket } from 'socket.io';
+
 dotenv.config();
 
-const server = fastify();
+const app = fastify();
+const port = process.env.PORT || 3000;
 
-// Create a MySQL connection
-const connection = mysql.createConnection({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
+// Serve static files
+app.register(fastifyStatic, {
+  root: path.join(__dirname, 'public'),
 });
 
-connection.connect((error) => {
-  if (error) {
-    console.error('Error connecting to MySQL:', error);
-  } else {
+// MySQL database connection
+const sequelize = new Sequelize({
+  database: process.env.DB_NAME,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  dialect: 'mysql',
+});
+
+// Define a model
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+});
+
+// Test the database connection
+sequelize
+  .authenticate()
+  .then(() => {
     console.log('Connected to MySQL database');
-  }
+  })
+  .catch((err: Error) => {
+    console.error('Error connecting to MySQL database:', err);
+  });
+
+// Create a basic HTTP server
+const server = createServer(app);
+
+// Socket.IO integration
+const io = new Server(server);
+io.on('connection', (socket: Socket) => {
+  console.log('A client connected');
+
+  socket.on('disconnect', () => {
+    console.log('A client disconnected');
+  });
+
+  // Handle custom events here
 });
 
-server.get('/ping', async (request, reply) => {
-  return 'pong\n';
+// Load index.html on the root route
+app.get('/', async () => {
+  return {
+    html: await app.inject('/index.html'),
+  };
 });
 
-server.listen({ port: 8080 }, (err, address) => {
+// Start the server
+server.listen(port, (err) => {
   if (err) {
-    console.error(err);
+    console.error('Error starting server:', err);
     process.exit(1);
   }
-  console.log(`Server listening at ${address}`);
+  console.log(`Server is listening on port ${port}`);
 });

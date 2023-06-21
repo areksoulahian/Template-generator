@@ -1,29 +1,63 @@
 import Koa from 'koa';
-import Router from 'koa-router';
-import sqlite3 from 'sqlite3';
+import http from 'http';
 import dotenv from 'dotenv';
 import path from 'path';
-import fs from 'fs-extra';
+import { Sequelize, DataTypes } from 'sequelize';
+import { Server as SocketIOServer } from 'socket.io';
+import serve from 'koa-static';
+
 dotenv.config();
 
-// Create a SQLite database connection
-const db = new sqlite3.Database(process.env.SQLITE_DB_PATH, (err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-  } else {
-    console.log('Connected to the SQLite database');
-  }
+// SQLite3 database connection
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: process.env.DB_PATH,
 });
 
+// Define a model
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+});
+
+// Create Koa app and HTTP server
 const app = new Koa();
-const router = new Router();
+const server = http.createServer(app.callback());
 
-router.get('/', async (ctx) => {
-  ctx.body = 'Hello, Koa TypeScript!';
+// Socket.IO integration
+const io = new SocketIOServer(server);
+io.on('connection', (socket) => {
+  console.log('A client connected');
+
+  socket.on('disconnect', () => {
+    console.log('A client disconnected');
+  });
+
+  // Handle custom events here
 });
 
-app.use(router.routes()).use(router.allowedMethods());
+// Serve static files (e.g., index.html)
+app.use(serve(path.join(__dirname, 'public')));
 
-app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
-});
+// Rest of the Koa app setup and routes
+
+const PORT = process.env.PORT || 3000;
+
+sequelize
+  .sync()
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error starting server:', error);
+    process.exit(1);
+  });
