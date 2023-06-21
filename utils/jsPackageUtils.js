@@ -53,12 +53,16 @@ export const generatePackageJson = (answers, projectName) => {
       packageJson.devDependencies['@types/express'] = 'latest';
     }
     if (answers.framework.toLowerCase() === 'koa') {
+      // packageJson.dependencies['koa'] = 'latest';
       packageJson.devDependencies['@types/koa'] = 'latest';
+      packageJson.devDependencies['@types/koa-router'] = 'latest';
     }
     if (answers.framework.toLowerCase() === 'fastify') {
+      // packageJson.dependencies['fastify'] = 'latest';
       packageJson.devDependencies['@types/fastify'] = 'latest';
     }
     if (answers.framework.toLowerCase() === 'hapi') {
+      // packageJson.dependencies['hapi'] = 'latest';
       packageJson.devDependencies['@types/hapi'] = 'latest';
     }
   }
@@ -87,6 +91,9 @@ export const generatePackageJson = (answers, projectName) => {
     packageJson.scripts['dev'] = 'nodemon --exec ts-node ./server.ts';
   } else if (answers.language.toLowerCase() === 'javascript') {
     packageJson.scripts['dev'] = 'nodemon .';
+  }
+  if (answers.language.toLowerCase() == 'typescript') {
+    packageJson.scripts['build'] = 'build": "tsc -p tsconfig.json';
   }
 
   //return as string

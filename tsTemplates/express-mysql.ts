@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
 import mysql, { Connection, MysqlError } from 'mysql';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
+import path from 'path';
+import fs from 'fs-extra';
 dotenv.config();
 
 // Create a MySQL connection
