@@ -1,7 +1,7 @@
 export const generateExpressMysqlJS = (answers) => {
   let mysqlVar = '';
-  let sequelizeVar = '';
   let mysqlConfig = '';
+  let sequelizeVar = '';
   let socketVar = '';
   let socketConfig = '';
 
