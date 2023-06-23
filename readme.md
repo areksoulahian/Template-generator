@@ -16,7 +16,6 @@ Using Nodejs
 
 - Node Rest Api (complete)
 - Node Realtime Server ( complete)
-- Node Serverside application (incomplete)
 
 ## Choose Framework REST API
 
@@ -56,11 +55,6 @@ Using Nodejs
 
 - eslint (complete)
 - None
-
-## Choose bundler
-
-- webpack (incomplete)
-- parcel (incomplete)
 
 ## needs to contain following files (complete)
 
