@@ -102,3 +102,18 @@ need to create individual config files based on the configuration of the user to
 - properly integrate the database with server files ( complete-ish )
 
 - Dockerize to connect to database easier ( incomplete )
+
+# file structure for scaffolding all projects( incomplete )
+
+- server.js
+- socket-server.js
+- routes/ ( routing for different files )
+  - index.js
+- models/ ( this is where the schema is)
+  - User.js
+- views/ ( this is where the template engine html viewing is)
+  - index.ejs
+- controllers/ ( logic for certain files )
+  - userController.js
+- config/ ( db configuration file )
+  - db.js
