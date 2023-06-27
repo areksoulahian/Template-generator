@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import fs from 'fs-extra';
+import fs, { outputFileSync } from 'fs-extra';
 import ejs from 'ejs';
 import path from 'path';
 
@@ -131,6 +131,9 @@ export const generateProject = (
   socketIOConfig,
   indexHTML,
   styleCSS,
+  generateDB,
+  generateJSserver,
+  generateTSserver,
 ) => {
   // Project name variable
   const projectName = answers['project-name'];
@@ -152,17 +155,39 @@ export const generateProject = (
   const outputDir = path.join(CURR_DIR, `output/${projectName}`);
   fs.ensureDirSync(outputDir);
 
+  // Create the views directory
+  const viewsDir = path.join(CURR_DIR, `views/`);
+  fs.ensureDirSync(viewsDir);
+
+  // Create the routes directory
+  const routesDir = path.join(CURR_DIR, `routes/`);
+  fs.ensureDirSync(routesDir);
+
+  // models
+  const modelsDir = path.join(CURR_DIR, `models/`);
+  fs.ensureDirSync(modelsDir);
+
+  // controllers
+  const controllersDir = path.join(CURR_DIR, `controllers/`);
+  fs.ensureDirSync(controllersDir);
+
   // Save the generated code to the output file
   if (answers.language.toLowerCase() === 'javascript') {
     const outputFilePath = path.join(outputDir, 'server.js');
-    fs.writeFileSync(outputFilePath, renderedTemplate);
+    // fs.writeFileSync(outputFilePath, renderedTemplate);
+    fs.writeFileSync(outputFilePath, generateJSserver);
   }
 
   // Save the generated Typescript code to the output file
   if (answers.language.toLowerCase() === 'typescript') {
     const outputTSFilePath = path.join(outputDir, 'server.ts');
-    fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
+    // fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
+    fs.writeFileSync(outputTSFilePath, generateTSserver);
   }
+
+  // generate db.js config file
+  const dbConfigFilePath = path.join(outputDir, 'config/db.js');
+  fs.writeFileSync(dbConfigFilePath, generateDB);
 
   // Write the package.json file in the output directory
   const packageJsonFilePath = path.join(outputDir, 'package.json');

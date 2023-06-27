@@ -21,39 +21,11 @@ import { generateSocket } from './utils/socketUtils.js';
 import { generateWelcomePage } from './utils/welcomePageUtils.js';
 import { generateWelcomePageCSS } from './utils/welcomePageCSSUtils.js';
 // import js templates
-import { generateExpressMongoJS } from './templateJSUtils/express-mongodb-js.js';
-import { generateExpressPgJS } from './templateJSUtils/express-pg-js.js';
-import { generateExpressMysqlJS } from './templateJSUtils/express-mysql-js.js';
-import { generateExpressSqlite3JS } from './templateJSUtils/express-sqlite3-js.js';
-import { generateHapiMongoJS } from './templateJSUtils/hapi-mongodb-js.js';
-import { generateHapiPgJS } from './templateJSUtils/hapi-pg-js.js';
-import { generateHapiMysqlJS } from './templateJSUtils/hapi-mysql-js.js';
-import { generateHapiSqlite3JS } from './templateJSUtils/hapi-sqlite3-js.js';
-import { generateKoaMongoJS } from './templateJSUtils/koa-mongodb-js.js';
-import { generateKoaPgJS } from './templateJSUtils/koa-pg-js.js';
-import { generateKoaMysqlJS } from './templateJSUtils/koa-mysql-js.js';
-import { generateKoaSqlite3JS } from './templateJSUtils/koa-sqlite3-js.js';
-import { generateFastifyMongoJS } from './templateJSUtils/fastify-mongodb-js.js';
-import { generateFastifyPgJS } from './templateJSUtils/fastify-pg-js.js';
-import { generateFastifyMysqlJS } from './templateJSUtils/fastify-mysql-js.js';
-import { generateFastifySqlite3JS } from './templateJSUtils/fastify-sqlite3-js.js';
+import { generateJSserver } from './templateJSUtils/jsGenerateServer.js';
 // import ts templates
-import { generateExpressMongoTS } from './templateJSUtils/express-mongodb-ts.js';
-import { generateExpressPgTS } from './templateJSUtils/express-pg-ts.js';
-import { generateExpressMysqlTS } from './templateJSUtils/express-mysql-ts.js';
-import { generateExpressSqlite3TS } from './templateJSUtils/express-sqlite3-ts.js';
-import { generateHapiMongoTS } from './templateJSUtils/hapi-mongodb-ts.js';
-import { generateHapiPgTS } from './templateJSUtils/hapi-pg-ts.js';
-import { generateHapiMysqlTS } from './templateJSUtils/hapi-mysql-ts.js';
-import { generateHapiSqlite3TS } from './templateJSUtils/hapi-sqlite3-ts.js';
-import { generateKoaMongoTS } from './templateJSUtils/koa-mongodb-ts.js';
-import { generateKoaPgTS } from './templateJSUtils/koa-pg-ts.js';
-import { generateKoaMysqlTS } from './templateJSUtils/koa-mysql-ts.js';
-import { generateKoaSqlite3TS } from './templateJSUtils/koa-sqlite3-ts.js';
-import { generateFastifyMongoTS } from './templateJSUtils/fastify-mongodb-ts.js';
-import { generateFastifyPgTS } from './templateJSUtils/fastify-pg-ts.js';
-import { generateFastifyMysqlTS } from './templateJSUtils/fastify-mysql-ts.js';
-import { generateFastifySqlite3TS } from './templateJSUtils/fastify-sqlite3-ts.js';
+import { generateTSserver } from './templateTSUtils/tsGenerateServer.js';
+// import db templates
+import { generateDB } from './templateDBUtils/generateDB.js';
 
 const existingConfig = fs.existsSync('package.json');
 
@@ -79,40 +51,11 @@ if (existingConfig) {
       const styleCSS = generateWelcomePageCSS();
 
       // templates variables JS
-      const expressMongoJS = generateExpressMongoJS(answers);
-      const expressMysqlJS = generateExpressMysqlJS(answers);
-      const expressPgJS = generateExpressPgJS(answers);
-      const expressSqlite3JS = generateExpressSqlite3JS(answers);
-      const hapiMongoJS = generateHapiMongoJS(answers);
-      const hapiMysqlJS = generateHapiMysqlJS(answers);
-      const hapiPgJS = generateHapiPgJS(answers);
-      const hapiSqlite3JS = generateHapiSqlite3JS(answers);
-      const fastifyMongoJS = generateFastifyMongoJS(answers);
-      const fastifyMysqlJS = generateFastifyMysqlJS(answers);
-      const fastifyPgJS = generateFastifyPgJS(answers);
-      const fastifySqlite3JS = generateFastifySqlite3JS(answers);
-      const koaMongoJS = generateKoaMongoJS(answers);
-      const koaMysqlJS = generateKoaMysqlJS(answers);
-      const koaPgJS = generateKoaPgJS(answers);
-      const koaSqlite3JS = generateKoaSqlite3JS(answers);
-
+      const serverJS = generateJSserver(answers);
       // templates variables TS
-      const expressMongoTS = generateExpressMongoTS(answers);
-      const expressMysqlTS = generateExpressMysqlTS(answers);
-      const expressPgTS = generateExpressPgTS(answers);
-      const expressSqlite3TS = generateExpressSqlite3TS(answers);
-      const hapiMongoTS = generateHapiMongoTS(answers);
-      const hapiMysqlTS = generateHapiMysqlTS(answers);
-      const hapiPgTS = generateHapiPgTS(answers);
-      const hapiSqlite3TS = generateHapiSqlite3TS(answers);
-      const fastifyMongoTS = generateFastifyMongoTS(answers);
-      const fastifyMysqlTS = generateFastifyMysqlTS(answers);
-      const fastifyPgTS = generateFastifyPgTS(answers);
-      const fastifySqlite3TS = generateFastifySqlite3TS(answers);
-      const koaMongoTS = generateKoaMongoTS(answers);
-      const koaMysqlTS = generateKoaMysqlTS(answers);
-      const koaPgTS = generateKoaPgTS(answers);
-      const koaSqlite3TS = generateKoaSqlite3TS(answers);
+      const serverTS = generateTSserver(answers);
+      // template DB
+      const dbConfigData = generateDB(answers);
 
       //generate
       generateProject(
@@ -130,6 +73,9 @@ if (existingConfig) {
         socketIOConfig,
         indexHTML,
         styleCSS,
+        serverJS,
+        serverTS,
+        dbConfigData,
       );
       // console log
       console.log('Project Name:', chalk.yellow(projectName));
