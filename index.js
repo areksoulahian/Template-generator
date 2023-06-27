@@ -21,11 +21,11 @@ import { generateSocket } from './utils/socketUtils.js';
 import { generateWelcomePage } from './utils/welcomePageUtils.js';
 import { generateWelcomePageCSS } from './utils/welcomePageCSSUtils.js';
 // import js templates
-import { generateJSserver } from './templateJSUtils/jsGenerateServer.js';
+import { generateJSserver } from './utils/jsGenerateServer.js';
 // import ts templates
-import { generateTSserver } from './templateTSUtils/tsGenerateServer.js';
+import { generateTSserver } from './utils/tsGenerateServer.js';
 // import db templates
-import { generateDB } from './templateDBUtils/generateDB.js';
+import { generateDB } from './utils/generateDB.js';
 
 const existingConfig = fs.existsSync('package.json');
 
@@ -49,7 +49,6 @@ if (existingConfig) {
       const socketIOConfig = generateSocket(answers);
       const indexHTML = generateWelcomePage(answers);
       const styleCSS = generateWelcomePageCSS();
-
       // templates variables JS
       const serverJS = generateJSserver(answers);
       // templates variables TS

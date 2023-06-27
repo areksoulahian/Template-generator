@@ -1,5 +1,6 @@
 import chalk from 'chalk';
-import fs, { outputFileSync } from 'fs-extra';
+import fs from 'fs-extra';
+// import { outputFileSync } from 'fs-extra';
 import ejs from 'ejs';
 import path from 'path';
 
@@ -138,56 +139,63 @@ export const generateProject = (
   // Project name variable
   const projectName = answers['project-name'];
 
-  // Load the appropriate template file
-  const templateFilePath = `./templates/${answers.framework}-${answers.database}.js`;
-  const template = fs.readFileSync(templateFilePath, 'utf-8');
+  // // Load the appropriate template file
+  // const templateFilePath = `./templates/${answers.framework}-${answers.database}.js`;
+  // const template = fs.readFileSync(templateFilePath, 'utf-8');
 
-  //Load TS template files
-  const tsTemplateFilePath = `./tsTemplates/${answers.framework}-${answers.database}.ts`;
-  const tsTemplate = fs.readFileSync(tsTemplateFilePath, 'utf-8');
+  // //Load TS template files
+  // const tsTemplateFilePath = `./tsTemplates/${answers.framework}-${answers.database}.ts`;
+  // const tsTemplate = fs.readFileSync(tsTemplateFilePath, 'utf-8');
 
-  // Render the template with the user-provided values
-  const renderedTemplate = ejs.render(template, answers);
-  // Render the  Typescript template with the user-provided values
-  const renderedTSTemplate = ejs.render(tsTemplate, answers);
+  // // Render the template with the user-provided values
+  // const renderedTemplate = ejs.render(template, answers);
+  // // Render the  Typescript template with the user-provided values
+  // const renderedTSTemplate = ejs.render(tsTemplate, answers);
 
   // Create the output directory
   const outputDir = path.join(CURR_DIR, `output/${projectName}`);
   fs.ensureDirSync(outputDir);
 
   // Create the views directory
-  const viewsDir = path.join(CURR_DIR, `views/`);
+  const viewsDir = path.join(CURR_DIR, `output/${projectName}/views/`);
   fs.ensureDirSync(viewsDir);
 
   // Create the routes directory
-  const routesDir = path.join(CURR_DIR, `routes/`);
+  const routesDir = path.join(CURR_DIR, `output/${projectName}/routes/`);
   fs.ensureDirSync(routesDir);
 
   // models
-  const modelsDir = path.join(CURR_DIR, `models/`);
+  const modelsDir = path.join(CURR_DIR, `output/${projectName}/models/`);
   fs.ensureDirSync(modelsDir);
 
   // controllers
-  const controllersDir = path.join(CURR_DIR, `controllers/`);
+  const controllersDir = path.join(
+    CURR_DIR,
+    `output/${projectName}/controllers/`,
+  );
   fs.ensureDirSync(controllersDir);
+
+  // config
+  const configDir = path.join(CURR_DIR, `output/${projectName}/config/`);
+  fs.ensureDirSync(configDir);
 
   // Save the generated code to the output file
   if (answers.language.toLowerCase() === 'javascript') {
     const outputFilePath = path.join(outputDir, 'server.js');
     // fs.writeFileSync(outputFilePath, renderedTemplate);
-    fs.writeFileSync(outputFilePath, generateJSserver);
+    fs.writeFileSync(outputFilePath, generateJSserver());
   }
 
   // Save the generated Typescript code to the output file
   if (answers.language.toLowerCase() === 'typescript') {
     const outputTSFilePath = path.join(outputDir, 'server.ts');
     // fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
-    fs.writeFileSync(outputTSFilePath, generateTSserver);
+    fs.writeFileSync(outputTSFilePath, generateTSserver());
   }
 
   // generate db.js config file
-  const dbConfigFilePath = path.join(outputDir, 'config/db.js');
-  fs.writeFileSync(dbConfigFilePath, generateDB);
+  const dbConfigFilePath = path.join(configDir, 'db.js');
+  fs.writeFileSync(dbConfigFilePath, generateDB());
 
   // Write the package.json file in the output directory
   const packageJsonFilePath = path.join(outputDir, 'package.json');

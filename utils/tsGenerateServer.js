@@ -21,16 +21,17 @@ export const generateTSserver = (answers) => {
   let hapiServerVar = '';
   let envVar = '';
 
-  // environment Variables
-  envVar = `const port = process.env.PORT || 3000;`;
-  // framework headers import
-  if (answers.framework.toLowerCase() === 'express') {
-    expressImportVar = `import express, { Request, Response } from 'express';
+  if (answers.language.toLowerCase() === 'typescript') {
+    // environment Variables
+    envVar = `const port = process.env.PORT || 3000;`;
+    // framework headers import
+    if (answers.framework.toLowerCase() === 'express') {
+      expressImportVar = `import express, { Request, Response } from 'express';
       import dotenv from 'dotenv';
       dotenv.config();
       import path from 'path';
       import fs from 'fs-extra';`;
-    expressServerVar = `// Create Express app
+      expressServerVar = `// Create Express app
       const app = express();
       app.use(express.json());
       // to load static files
@@ -71,16 +72,16 @@ export const generateTSserver = (answers) => {
       });
       // Start the server
       app.listen(port, () => {
-        console.log(\`Server running on http://localhost:${port}\`);
+        console.log(\`Server running on http://localhost:\${port}\`);
       });`;
-  } else if (answers.framework.toLowerCase() === 'fastify') {
-    fastifyImportVar = `import fastify from 'fastify';
+    } else if (answers.framework.toLowerCase() === 'fastify') {
+      fastifyImportVar = `import fastify from 'fastify';
       import fastifyStatic from 'fastify-static';
       import dotenv from 'dotenv';
       dotenv.config();
       import path from 'path';
       import fs from 'fs-extra';`;
-    fastifyServerVar = `ket: Socket) => {
+      fastifyServerVar = `ket: Socket) => {
           console.log('A client connected');
         
           socket.on('disconnect', () => {
@@ -95,15 +96,15 @@ export const generateTSserver = (answers) => {
             console.error('Error starting server:', err);
             process.exit(1);
           }
-          console.log(\`Server is listening on ${port}\`);
+          console.log(\`Server is listening on \${port}\`);
         });`;
-  } else if (answers.framework.toLowerCase() === 'koa') {
-    koaImportVar = `import koa from 'koa';
+    } else if (answers.framework.toLowerCase() === 'koa') {
+      koaImportVar = `import koa from 'koa';
       import dotenv from 'dotenv';
       dotenv.config();
       import path from 'path';
       import fs from 'fs-extra';`;
-    koaServerVar = `// Create Koa app and HTTP server
+      koaServerVar = `// Create Koa app and HTTP server
       const app = new Koa();
       const server = http.createServer(app.callback());
       // Serve static files (e.g., index.html)
@@ -113,7 +114,7 @@ export const generateTSserver = (answers) => {
         .sync()
         .then(() => {
           server.listen(PORT, () => {
-            console.log(\`Server listening on port ${PORT}\`);
+            console.log(\`Server listening on port \${PORT}\`);
           });
         })
         .catch((error) => {
@@ -121,13 +122,13 @@ export const generateTSserver = (answers) => {
           process.exit(1);
         });
   `;
-  } else if (answers.framework.toLowerCase() === 'hapi') {
-    hapiImportVar = `import hapi from 'hapi';
+    } else if (answers.framework.toLowerCase() === 'hapi') {
+      hapiImportVar = `import hapi from 'hapi';
       import dotenv from 'dotenv';
       dotenv.config();
       import path from 'path';
       import fs from 'fs-extra';`;
-    hapiServerVar = `const server = Hapi.server({
+      hapiServerVar = `const server = Hapi.server({
         port: process.env.PORT || 3000,
         host: 'localhost',
       });
@@ -151,14 +152,14 @@ export const generateTSserver = (answers) => {
       };
       
       startServer();`;
-  } else {
-    return null;
-  }
+    } else {
+      return null;
+    }
 
-  // if socketio
-  if (answers.websocket.toLowerCase() === 'socketio') {
-    socketVar = `import { Server as SocketIOServer } from 'socket.io';`;
-    socketConfig = `// Socket.IO integration
+    // if socketio
+    if (answers.websocket.toLowerCase() === 'socketio') {
+      socketVar = `import { Server as SocketIOServer } from 'socket.io';`;
+      socketConfig = `// Socket.IO integration
   const io = new SocketIOServer(server);
   io.on('connection', (socket) => {
       console.log('A client connected');
@@ -169,93 +170,95 @@ export const generateTSserver = (answers) => {
   
       // Handle custom events here
   });`;
-  }
+    }
 
-  //  ORM Config
-  if (answers.orm.toLowerCase() === 'mongoose') {
-    mongooseVar = `import mongoose from 'mongoose';`;
-  } else if (answers.orm.toLowerCase() === 'sequelize') {
-    sequelizeVar = `import sequelizer, { Sequelize, DataTypes } from 'sequelizer';`;
-  }
+    //  ORM Config
+    if (answers.orm.toLowerCase() === 'mongoose') {
+      mongooseVar = `import mongoose from 'mongoose';`;
+    } else if (answers.orm.toLowerCase() === 'sequelize') {
+      sequelizeVar = `import sequelizer, { Sequelize, DataTypes } from 'sequelizer';`;
+    }
 
-  // DB Config
-  if (answers.database.toLowerCase() === 'mongodb') {
-    mongoVar = `// Connect to MongoDB
-      const mongodbURI = process.env.MONGODB_URI;
-      const mongodbDB = process.env.MONGODB_DB;`;
-    mongodbConfig = `// Connect to MongoDB
-          mongoose.connect(\`${mongodbURI}${mongodbDB}\`, {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-          });
-          const db = mongoose.connection;
-          db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-          db.once('open', () => {
-          console.log('Connected to MongoDB');
-          });
-          
-          // Define a Mongoose schema for a simple example collection
-          const exampleSchema = new mongoose.Schema({
-          name: String,
-          age: Number,
-          });
-          
-          // Define a Mongoose model based on the schema
-          const Example = mongoose.model('Example', exampleSchema);`;
-  } else if (answers.database.toLowerCase() === 'mysql') {
-    mysqlVar = `// Create a MySQL connection
-      const connection = mysql.createConnection({
-        host: process.env.MYSQL_HOST,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE,
-      });
-      `;
-    mysqlConfig = `connection.connect((error) => {
-        if (error) {
-          console.error('Error connecting to MySQL:', error);
-        } else {
-          console.log('Connected to MySQL database');
-        }
-      });`;
-  } else if (answers.database.toLowerCase() === 'sqlite3') {
-    sqlite3Var = `// SQLite3 database connection
-      const sequelize = new Sequelize({
-        dialect: 'sqlite',
-        storage: process.env.DB_PATH,
-      });
-      `;
-    sqlite3Config = `// Define a model
-      const User = sequelize.define('User', {
-        name: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        email: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          unique: true,
-        },
-      });`;
-  } else if (answers.database.toLowerCase() === 'pg') {
-    pgVar = `// Create a PostgreSQL pool
-      const pool = new pg.Pool({
-        user: process.env.PG_USER,
-        host: process.env.PG_HOST,
-        database: process.env.PG_DATABASE,
-        password: process.env.PG_PASSWORD,
-        port: process.env.PG_PORT,
-      });
-      `;
-    pgConfig = `pool.connect((error) => {
-        if (error) {
-          console.error('Error connecting to PG:', error);
-        } else {
-          console.log('Connected to PG database');
-        }
-      });`;
-  } else {
-    return null;
+    //   // DB Config
+    //   if (answers.database.toLowerCase() === 'mongodb') {
+    //     mongoVar = `// Connect to MongoDB
+    //       const mongodbURI = process.env.MONGODB_URI;
+    //       const mongodbDB = process.env.MONGODB_DB;`;
+    //     mongodbConfig = `// Connect to MongoDB
+    //           mongoose.connect(\`${mongodbURI}${mongodbDB}\`, {
+    //           useNewUrlParser: true,
+    //           useUnifiedTopology: true,
+    //           });
+    //           const db = mongoose.connection;
+    //           db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+    //           db.once('open', () => {
+    //           console.log('Connected to MongoDB');
+    //           });
+
+    //           // Define a Mongoose schema for a simple example collection
+    //           const exampleSchema = new mongoose.Schema({
+    //           name: String,
+    //           age: Number,
+    //           });
+
+    //           // Define a Mongoose model based on the schema
+    //           const Example = mongoose.model('Example', exampleSchema);`;
+    //   } else if (answers.database.toLowerCase() === 'mysql') {
+    //     mysqlVar = `// Create a MySQL connection
+    //       const connection = mysql.createConnection({
+    //         host: process.env.MYSQL_HOST,
+    //         user: process.env.MYSQL_USER,
+    //         password: process.env.MYSQL_PASSWORD,
+    //         database: process.env.MYSQL_DATABASE,
+    //       });
+    //       `;
+    //     mysqlConfig = `connection.connect((error) => {
+    //         if (error) {
+    //           console.error('Error connecting to MySQL:', error);
+    //         } else {
+    //           console.log('Connected to MySQL database');
+    //         }
+    //       });`;
+    //   } else if (answers.database.toLowerCase() === 'sqlite3') {
+    //     sqlite3Var = `// SQLite3 database connection
+    //       const sequelize = new Sequelize({
+    //         dialect: 'sqlite',
+    //         storage: process.env.DB_PATH,
+    //       });
+    //       `;
+    //     sqlite3Config = `// Define a model
+    //       const User = sequelize.define('User', {
+    //         name: {
+    //           type: DataTypes.STRING,
+    //           allowNull: false,
+    //         },
+    //         email: {
+    //           type: DataTypes.STRING,
+    //           allowNull: false,
+    //           unique: true,
+    //         },
+    //       });`;
+    //   } else if (answers.database.toLowerCase() === 'pg') {
+    //     pgVar = `// Create a PostgreSQL pool
+    //       const pool = new pg.Pool({
+    //         user: process.env.PG_USER,
+    //         host: process.env.PG_HOST,
+    //         database: process.env.PG_DATABASE,
+    //         password: process.env.PG_PASSWORD,
+    //         port: process.env.PG_PORT,
+    //       });
+    //       `;
+    //     pgConfig = `pool.connect((error) => {
+    //         if (error) {
+    //           console.error('Error connecting to PG:', error);
+    //         } else {
+    //           console.log('Connected to PG database');
+    //         }
+    //       });`;
+    //   }
+    else {
+      return null;
+    }
   }
 
   return `
