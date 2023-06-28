@@ -106,7 +106,7 @@ if (existingConfig) {
           font: 'Standard',
           horizontalLayout: 'default fitted full',
           verticalLayout: 'default',
-          width: 120,
+          width: 80,
           whitespaceBreak: true,
         },
         function (err, data) {

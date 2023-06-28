@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
-import ejs from 'ejs';
 import path from 'path';
+// import ejs from 'ejs';
 
 const CURR_DIR = process.cwd();
 

@@ -3,8 +3,7 @@ export const generateDBconfig = (answers) => {
 
   // MongoDB
   if (answers.database.toLowerCase() === 'mongodb') {
-    dbConfigCode += `
-const mongoose = require('mongoose');
+    dbConfigCode += `const mongoose = require('mongoose');
 require('dotenv').config();
 
 // Establish MongoDB connection
@@ -50,8 +49,7 @@ module.exports = connection;
 
   // SQLite3
   else if (answers.database.toLowerCase() === 'sqlite3') {
-    dbConfigCode += `
-const sqlite3 = require('sqlite3').verbose();
+    dbConfigCode += `const sqlite3 = require('sqlite3').verbose();
 require('dotenv').config();
 
 // Establish SQLite3 connection
@@ -93,7 +91,5 @@ module.exports = pool;`;
     return null;
   }
 
-  return `
-  ${dbConfigCode}
-  `;
+  return `${dbConfigCode}`;
 };
