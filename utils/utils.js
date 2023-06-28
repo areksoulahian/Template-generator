@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
-// import { outputFileSync } from 'fs-extra';
 import ejs from 'ejs';
 import path from 'path';
 
@@ -132,9 +131,9 @@ export const generateProject = (
   socketIOConfig,
   indexHTML,
   styleCSS,
-  generateDB,
-  generateJSserver,
-  generateTSserver,
+  dbConfigData,
+  serverJS,
+  serverTS,
 ) => {
   // Project name variable
   const projectName = answers['project-name'];
@@ -183,19 +182,19 @@ export const generateProject = (
   if (answers.language.toLowerCase() === 'javascript') {
     const outputFilePath = path.join(outputDir, 'server.js');
     // fs.writeFileSync(outputFilePath, renderedTemplate);
-    fs.writeFileSync(outputFilePath, generateJSserver());
+    fs.writeFileSync(outputFilePath, serverJS);
   }
 
   // Save the generated Typescript code to the output file
   if (answers.language.toLowerCase() === 'typescript') {
     const outputTSFilePath = path.join(outputDir, 'server.ts');
     // fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
-    fs.writeFileSync(outputTSFilePath, generateTSserver());
+    fs.writeFileSync(outputTSFilePath, serverTS);
   }
 
   // generate db.js config file
   const dbConfigFilePath = path.join(configDir, 'db.js');
-  fs.writeFileSync(dbConfigFilePath, generateDB());
+  fs.writeFileSync(dbConfigFilePath, dbConfigData);
 
   // Write the package.json file in the output directory
   const packageJsonFilePath = path.join(outputDir, 'package.json');
