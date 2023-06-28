@@ -116,7 +116,7 @@ export const promptQuestions = [
   },
 ];
 
-export const generateProject = (
+export const generateProject = ({
   answers,
   packageJsonData,
   tsConfigData,
@@ -134,7 +134,7 @@ export const generateProject = (
   dbConfigData,
   serverJS,
   serverTS,
-) => {
+}) => {
   // Project name variable
   const projectName = answers['project-name'];
 
@@ -179,22 +179,21 @@ export const generateProject = (
   fs.ensureDirSync(configDir);
 
   // Save the generated code to the output file
-  if (answers.language.toLowerCase() === 'javascript') {
-    const outputFilePath = path.join(outputDir, 'server.js');
-    // fs.writeFileSync(outputFilePath, renderedTemplate);
-    fs.writeFileSync(outputFilePath, serverJS);
-  }
+
+  const outputFilePath = path.join(outputDir, 'server.js');
+  // fs.writeFileSync(outputFilePath, renderedTemplate);
+  fs.writeFileSync(outputFilePath, serverJS);
 
   // Save the generated Typescript code to the output file
-  if (answers.language.toLowerCase() === 'typescript') {
-    const outputTSFilePath = path.join(outputDir, 'server.ts');
-    // fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
-    fs.writeFileSync(outputTSFilePath, serverTS);
-  }
+  const outputTSFilePath = path.join(outputDir, 'server.ts');
+  // fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
+  fs.writeFileSync(outputTSFilePath, serverTS);
 
   // generate db.js config file
-  const dbConfigFilePath = path.join(configDir, 'db.js');
-  fs.writeFileSync(dbConfigFilePath, dbConfigData);
+  if (dbConfigData) {
+    const dbConfigFilePath = path.join(outputDir, 'config', 'db.js');
+    fs.writeFileSync(dbConfigFilePath, dbConfigData);
+  }
 
   // Write the package.json file in the output directory
   const packageJsonFilePath = path.join(outputDir, 'package.json');

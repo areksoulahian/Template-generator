@@ -1,23 +1,25 @@
 export const generateJSserver = (answers) => {
+  let mongooseVar = '';
+  let sequelizeVar = '';
   let serverImport = '';
   let serverVar = '';
   let staticRoute = '';
-  let mongooseVar = '';
-  let sequelizeVar = '';
+  serverImport = '';
 
-  // Express ------------------------------------------------------
-  if (answers.framework.toLowerCase() === 'express') {
-    serverImport = `import express, { Request, Response } from 'express';
+  if (answers.language.toLowerCase() === 'javascript') {
+    // Express ------------------------------------------------------
+    if (answers.framework.toLowerCase() === 'express') {
+      serverImport += `// javascript express server
+import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import path from 'path';
-import fs from 'fs-extra';
-`;
-    serverVar = `const app = express();
+import fs from 'fs-extra';`;
+      serverVar += `const app = express();
 const port = process.env.PORT || 3000;
 
 // Define your routes
-app.get('<%= route %>', async (req, res) => {
+app.get(\${answers.route}\, async (req, res) => {
     const indexHTMLPath = path.join('index.html');
 
     // Read the HTML file
@@ -33,18 +35,20 @@ app.get('<%= route %>', async (req, res) => {
     });
 });
 
+\${staticRoute}\
+
 app.listen(port, () => {
 console.log(\`Server running on http://localhost:\${port}\`);
 });
 `;
-    staticRoute = `
+      staticRoute = `
 // Serve static files
 app.use(express.static(__dirname));`;
-  }
+    }
 
-  // Koa -------------------------------------------------------------
-  if (answers.framework.toLowerCase() === 'koa') {
-    serverImport = `
+    // Koa -------------------------------------------------------------
+    else if (answers.framework.toLowerCase() === 'koa') {
+      serverImport += `
 import Koa from 'koa';
 import koaStatic from 'koa-static';
 import Router from 'koa-router';
@@ -52,7 +56,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import path from 'path';
 import fs from 'fs-extra';`;
-    serverVar = `
+      serverVar += `
 const app = new Koa();
 const router = new Router();
 const port = process.env.PORT || 3000;
@@ -71,7 +75,7 @@ app.use(async (ctx) => {
 });
 
 // Define your routes
-router.get('<%= route %>', async (ctx) => {
+router.get('\${answers.route}\', async (ctx) => {
   try {
   } catch (error) {
     console.error('Error occurred:', error);
@@ -83,31 +87,32 @@ router.get('<%= route %>', async (ctx) => {
 // Apply the router middleware
 app.use(router.routes());
 
+\${staticRoute}\
+
 // Start the server
 app.listen(port, () => {
   console.log(\`Server running on http://localhost:\${port}\`);
-});
-`;
-    staticRoute = `
+});`;
+      staticRoute = `
 // Serve static files
 app.use(require('koa-static')(__dirname));`;
-  }
+    }
 
-  // Fastify ----------------------------------------------------
-  if (answers.framework.toLowerCase() === 'fastify') {
-    serverImport = `
+    // Fastify ----------------------------------------------------
+    else if (answers.framework.toLowerCase() === 'fastify') {
+      serverImport += `
 import fastify from 'fastify';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 import path from 'path';
 import fs from 'fs-extra';`;
-    serverVar = `
+      serverVar += `
 const app = fastify();
 const port = process.env.PORT || 3000; 
 
 // define route
-app.get('<%= route %>', async (request, reply) => {
+app.get('\${answers.route}\', async (request, reply) => {
   try {
     // Implement your logic here
     // Use the PostgreSQL pool to query the database
@@ -133,6 +138,8 @@ app.get('<%= route %>', async (request, reply) => {
   }
 });
 
+\${staticRoute}\
+
 app.listen(port, (err) => {
   if (err) {
     console.error('Error starting server:', err);
@@ -140,27 +147,27 @@ app.listen(port, (err) => {
     console.log(\`Server running on http://localhost:\${port}\`);
   }
 });`;
-    staticRoute = `
+      staticRoute = `
 // Serve static files
 app.register(require('fastify-static'), {
   root: __dirname,
 });`;
-  }
+    }
 
-  // Hapi -------------------------------------------------------
-  if (answers.framework.toLowerCase() === 'hapi') {
-    serverImport = `
+    // Hapi -------------------------------------------------------
+    else if (answers.framework.toLowerCase() === 'hapi') {
+      serverImport += `
 import Hapi from 'hapi';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 import path from 'path';
 import fs from 'fs-extra';`;
-    serverVar = `
+      serverVar += `
 // Define your routes
 server.route({
   method: 'GET',
-  path: '<%= route %>',
+  path: '\${answers.route}\',
   handler: async (request, h) => {
     const indexHTMLPath = path.join(__dirname, 'index.html');
 
@@ -197,19 +204,21 @@ const startServer = async () => {
 };
 
 startServer();`;
+    } else {
+      return null;
+    }
+
+    //  ORM Config
+    if (answers.orm.toLowerCase() === 'mongoose') {
+      mongooseVar = `import mongoose from 'mongoose';`;
+    } else if (answers.orm.toLowerCase() === 'sequelize') {
+      sequelizeVar = `import sequelizer, { Sequelize, DataTypes } from 'sequelizer';`;
+    }
   }
 
-  //  ORM Config
-  if (answers.orm.toLowerCase() === 'mongoose') {
-    mongooseVar = `import mongoose from 'mongoose';`;
-  } else if (answers.orm.toLowerCase() === 'sequelize') {
-    sequelizeVar = `import sequelizer, { Sequelize, DataTypes } from 'sequelizer';`;
-  }
-
-  return `
-${serverImport}
-${mongooseVar}
-${sequelizeVar}
+  return `${serverImport}
+  ${mongooseVar}
+  ${sequelizeVar}
 
 ${serverVar}
 

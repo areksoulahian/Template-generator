@@ -20,8 +20,7 @@ export const generateTSserver = (answers) => {
   let koaServerVar = '';
   let hapiServerVar = '';
   let envVar = '';
-
-  if (answers.language.toLowerCase() === 'typescript') {
+  if (answers.framework.toLowerCase() === 'typescript') {
     // environment Variables
     envVar = `const port = process.env.PORT || 3000;`;
     // framework headers import

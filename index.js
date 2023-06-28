@@ -25,7 +25,7 @@ import { generateJSserver } from './utils/jsGenerateServer.js';
 // import ts templates
 import { generateTSserver } from './utils/tsGenerateServer.js';
 // import db templates
-import { generateDB } from './utils/generateDB.js';
+import { generateDBconfig } from './utils/generateDB.js';
 
 const existingConfig = fs.existsSync('package.json');
 
@@ -54,10 +54,10 @@ if (existingConfig) {
       // templates variables TS
       const serverTS = generateTSserver(answers);
       // template DB
-      const dbConfigData = generateDB(answers);
+      const dbConfigData = generateDBconfig(answers);
 
       //generate
-      generateProject(
+      generateProject({
         answers,
         packageJsonData,
         tsConfigData,
@@ -72,10 +72,10 @@ if (existingConfig) {
         socketIOConfig,
         indexHTML,
         styleCSS,
+        dbConfigData,
         serverJS,
         serverTS,
-        dbConfigData,
-      );
+      });
       // console log
       console.log('Project Name:', chalk.yellow(projectName));
       console.log('Language:', chalk.yellow(answers.language));
