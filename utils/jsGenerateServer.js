@@ -17,45 +17,42 @@ import fs from 'fs-extra';`;
 const port = process.env.PORT || 3000;
 
 // Define your routes
-app.get(\${answers.route}\, async (req, res) => {
-    const indexHTMLPath = path.join('index.html');
+app.get(${answers.route}, async (req, res) => {
+  const indexHTMLPath = path.join('index.html');
 
-    // Read the HTML file
-    fs.readFile(indexHTMLPath, 'utf-8', (err, data) => {
-    if (err) {
-        console.error('Error reading file:', err);
-        res.status(500).send('Internal Server Error');
-        return;
-    }
+  // Read the HTML file
+  fs.readFile(indexHTMLPath, 'utf-8', (err, data) => {
+  if (err) {
+      console.error('Error reading file:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+  }
 
-    // Send the HTML content in the response
-    res.send(data);
-    });
+  // Send the HTML content in the response
+  res.send(data);
+  });
 });
 
-\${staticRoute}\
+${staticRoute}
 
 app.listen(port, () => {
 console.log(\`Server running on http://localhost:\${port}\`);
 });
 `;
-    staticRoute = `
-// Serve static files
+    staticRoute = `// Serve static files
 app.use(express.static(__dirname));`;
   }
 
   // Koa -------------------------------------------------------------
   else if (answers.framework.toLowerCase() === 'koa') {
-    serverImport += `
-import Koa from 'koa';
+    serverImport += `import Koa from 'koa';
 import koaStatic from 'koa-static';
 import Router from 'koa-router';
 import dotenv from 'dotenv';
 dotenv.config();
 import path from 'path';
 import fs from 'fs-extra';`;
-    serverVar += `
-const app = new Koa();
+    serverVar += `const app = new Koa();
 const router = new Router();
 const port = process.env.PORT || 3000;
 
@@ -73,7 +70,7 @@ app.use(async (ctx) => {
 });
 
 // Define your routes
-router.get('\${answers.route}\', async (ctx) => {
+router.get('${answers.route}', async (ctx) => {
   try {
   } catch (error) {
     console.error('Error occurred:', error);
@@ -85,7 +82,7 @@ router.get('\${answers.route}\', async (ctx) => {
 // Apply the router middleware
 app.use(router.routes());
 
-\${staticRoute}\
+${staticRoute}
 
 // Start the server
 app.listen(port, () => {
@@ -98,15 +95,13 @@ app.use(require('koa-static')(__dirname));`;
 
   // Fastify ----------------------------------------------------
   else if (answers.framework.toLowerCase() === 'fastify') {
-    serverImport += `
-import fastify from 'fastify';
+    serverImport += `import fastify from 'fastify';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 import path from 'path';
 import fs from 'fs-extra';`;
-    serverVar += `
-const app = fastify();
+    serverVar += `const app = fastify();
 const port = process.env.PORT || 3000; 
 
 // define route
@@ -136,7 +131,7 @@ app.get('\${answers.route}\', async (request, reply) => {
   }
 });
 
-\${staticRoute}\
+${staticRoute}
 
 app.listen(port, (err) => {
   if (err) {
@@ -154,18 +149,16 @@ app.register(require('fastify-static'), {
 
   // Hapi -------------------------------------------------------
   else if (answers.framework.toLowerCase() === 'hapi') {
-    serverImport += `
-import Hapi from 'hapi';
+    serverImport += `import Hapi from 'hapi';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 import path from 'path';
 import fs from 'fs-extra';`;
-    serverVar += `
-// Define your routes
+    serverVar += `// Define your routes
 server.route({
   method: 'GET',
-  path: '\${answers.route}\',
+  path: '${answers.route}',
   handler: async (request, h) => {
     const indexHTMLPath = path.join(__dirname, 'index.html');
 
