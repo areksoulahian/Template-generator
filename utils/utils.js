@@ -180,14 +180,18 @@ export const generateProject = ({
 
   // Save the generated code to the output file
 
-  const outputFilePath = path.join(outputDir, 'server.js');
-  // fs.writeFileSync(outputFilePath, renderedTemplate);
-  fs.writeFileSync(outputFilePath, serverJS);
+  if (answers.language.toLowerCase() === 'javascript') {
+    const outputFilePath = path.join(outputDir, 'server.js');
+    // fs.writeFileSync(outputFilePath, renderedTemplate);
+    fs.writeFileSync(outputFilePath, serverJS);
+  }
 
-  // Save the generated Typescript code to the output file
-  const outputTSFilePath = path.join(outputDir, 'server.ts');
-  // fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
-  fs.writeFileSync(outputTSFilePath, serverTS);
+  if (answers.language.toLowerCase() === 'typescript') {
+    // Save the generated Typescript code to the output file
+    const outputTSFilePath = path.join(outputDir, 'server.ts');
+    // fs.writeFileSync(outputTSFilePath, renderedTSTemplate);
+    fs.writeFileSync(outputTSFilePath, serverTS);
+  }
 
   // generate db.js config file
   if (dbConfigData) {
