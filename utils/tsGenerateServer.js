@@ -10,16 +10,26 @@ export const generateTSserver = (answers) => {
   let koaServerVar = '';
   let hapiServerVar = '';
   let envVar = '';
+
+  //  ORM Config
+  if (answers.orm.toLowerCase() === 'mongoose') {
+    mongooseVar = `import mongoose from 'mongoose';`;
+  } else if (answers.orm.toLowerCase() === 'sequelize') {
+    sequelizeVar = `import sequelizer, { Sequelize, DataTypes } from 'sequelizer';`;
+  } else {
+    return null;
+  }
   // environment Variables
   envVar = `const port = process.env.PORT || 3000;`;
   // framework headers import
   if (answers.framework.toLowerCase() === 'express') {
     expressImportVar = `import express, { Request, Response } from 'express';
-  import dotenv from 'dotenv';
-  dotenv.config();
-  import path from 'path';
-  import fs from 'fs-extra';`;
-    expressServerVar = `// Create Express app
+import dotenv from 'dotenv';
+dotenv.config();
+import path from 'path';
+import fs from 'fs-extra';`;
+    expressServerVar = `
+// Create Express app
 const app = express();
 app.use(express.json());
 // to load static files
@@ -140,15 +150,6 @@ const startServer = async () => {
 };
 
 startServer();`;
-  } else {
-    return null;
-  }
-
-  //  ORM Config
-  if (answers.orm.toLowerCase() === 'mongoose') {
-    mongooseVar = `import mongoose from 'mongoose';`;
-  } else if (answers.orm.toLowerCase() === 'sequelize') {
-    sequelizeVar = `import sequelizer, { Sequelize, DataTypes } from 'sequelizer';`;
   } else {
     return null;
   }

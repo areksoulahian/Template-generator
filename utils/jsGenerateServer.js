@@ -5,6 +5,13 @@ export const generateJSserver = (answers) => {
   let serverVar = '';
   let staticRoute = '';
   serverImport = '';
+
+  //  ORM Config
+  if (answers.orm.toLowerCase() === 'mongoose') {
+    mongooseVar = `import mongoose from 'mongoose';`;
+  } else if (answers.orm.toLowerCase() === 'sequelize') {
+    sequelizeVar = `import sequelizer, { Sequelize, DataTypes } from 'sequelizer';`;
+  }
   // Express ------------------------------------------------------
   if (answers.framework.toLowerCase() === 'express') {
     serverImport += `// javascript express server
@@ -17,7 +24,7 @@ import fs from 'fs-extra';`;
 const port = process.env.PORT || 3000;
 
 // Define your routes
-app.get(${answers.route}, async (req, res) => {
+app.get('/', async (req, res) => {
   const indexHTMLPath = path.join('index.html');
 
   // Read the HTML file
@@ -70,7 +77,7 @@ app.use(async (ctx) => {
 });
 
 // Define your routes
-router.get('${answers.route}', async (ctx) => {
+router.get('/', async (ctx) => {
   try {
   } catch (error) {
     console.error('Error occurred:', error);
@@ -105,7 +112,7 @@ import fs from 'fs-extra';`;
 const port = process.env.PORT || 3000; 
 
 // define route
-app.get('\${answers.route}\', async (request, reply) => {
+app.get('/', async (request, reply) => {
   try {
     // Implement your logic here
     // Use the PostgreSQL pool to query the database
@@ -158,7 +165,7 @@ import fs from 'fs-extra';`;
     serverVar += `// Define your routes
 server.route({
   method: 'GET',
-  path: '${answers.route}',
+  path: '/',
   handler: async (request, h) => {
     const indexHTMLPath = path.join(__dirname, 'index.html');
 
@@ -199,16 +206,9 @@ startServer();`;
     return null;
   }
 
-  //  ORM Config
-  if (answers.orm.toLowerCase() === 'mongoose') {
-    mongooseVar = `import mongoose from 'mongoose';`;
-  } else if (answers.orm.toLowerCase() === 'sequelize') {
-    sequelizeVar = `import sequelizer, { Sequelize, DataTypes } from 'sequelizer';`;
-  }
-
   return `${serverImport}
-  ${mongooseVar}
-  ${sequelizeVar}
-  ${serverVar}
-  ${staticRoute}`;
+${mongooseVar}
+${sequelizeVar}
+${serverVar}
+${staticRoute}`;
 };

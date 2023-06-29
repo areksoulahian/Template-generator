@@ -2,8 +2,7 @@ export const generateWelcomePage = (answers) => {
   let fm = `${answers.framework.toLowerCase()}`;
   let db = `${answers.database.toLowerCase()}`;
   let welcomeMessage = `Hello User, you started ${fm} with ${db} App!`;
-  const htmlContent = `
-<!DOCTYPE html>
+  const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -38,8 +37,7 @@ export const generateWelcomePage = (answers) => {
     </style>
 </body>
 
-</html>
-    `;
+</html>`;
 
   return htmlContent;
 };
